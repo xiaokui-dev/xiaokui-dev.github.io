@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="xiaokui&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Dubbo 面试笔记 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111867840-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-111867840-1');
+    </script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Dubbo 面试笔记</h2>
+  <p class="post-date">2021-09-27</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="Dubbo-面试题笔记"><a href="#Dubbo-面试题笔记" class="headerlink" title="Dubbo 面试题笔记"></a>Dubbo 面试题笔记</h1><h2 id="Dubbo-有几种配置方式"><a href="#Dubbo-有几种配置方式" class="headerlink" title="Dubbo 有几种配置方式"></a>Dubbo 有几种配置方式</h2><ul>
+<li>XML 配置</li>
+<li>注解配置</li>
+<li>属性配置</li>
+<li>Java API 配置</li>
+</ul>
+<p>实际上，还有第五种方式，外部化配置。参见 <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012661402">dubbo 新编程模型之外部化配置</a><br>目前，主要使用的是 XML 配置和注解配置。</p>
+<h2 id="Dubbo-和-spring-boot-进行集成"><a href="#Dubbo-和-spring-boot-进行集成" class="headerlink" title="Dubbo 和 spring boot 进行集成"></a>Dubbo 和 spring boot 进行集成</h2><p>官方提供了集成库 <a target="_blank" rel="noopener" href="https://github.com/apache/incubator-dubbo-spring-boot-project">dubbo-spring-boot</a></p>
+<h2 id="Dubbo-框架的分层设计"><a href="#Dubbo-框架的分层设计" class="headerlink" title="Dubbo 框架的分层设计"></a>Dubbo 框架的分层设计</h2><p>一共分成 10 层，理解后是非常清晰的。如下图所示：</p>
+<img src="/2021/09/27/interview-dubbo/dubbo-01.png" class="">
+
+<p><strong>图例说明</strong></p>
+<ul>
+<li><p>最顶上九个图标，代表本图中的对象与流程。</p>
+</li>
+<li><p>图中左边淡蓝背景(Consumer)的为服务消费方使用的接口，右边淡绿色背景(Provider)的为服务提供方使用的接口，位于中轴线上的为双方都用到的接口。</p>
+</li>
+<li><p>图中从下至上分为十层，各层为单向依赖，右边的黑色箭头(Depend)代表层之间的依赖关系，每一层都可以剥离上层被复用。其中 Service 和 Config 层为 API，其它层均为 SPI。</p>
+<blockquote>
+<p>注意，Dubbo 并为使用 JDK SPI 机制，而是自己实现了一套 Dubbo SPI 机制。</p>
+</blockquote>
+</li>
+<li><p>图中绿色小块(Interface)的为扩展接口，蓝色小块(Class)为实现类，图中只显示关联各层的实现类。</p>
+</li>
+<li><p>图中蓝色虚线(Init)为初始化过程，即启动时组装链。红色实线(Call)为方法调用过程，即运行时调用链。紫色三角箭头(Inherit)为继承，可以把子类看作父类的同一个节点，线上的文字为调用的方法。</p>
+</li>
+</ul>
+<p><strong>各层说明</strong><br>虽然有 10 层这么多，总体分为 Business、RPC、Remoting 三大层。如下:</p>
+<p>=================== Business ===================</p>
+<ul>
+<li><p>Service 业务层: 业务代码的接口与实现。我们实际使用 Dubbo 的业务层级。</p>
+<blockquote>
+<p>接口层，给服务提供者和消费者来实现的。</p>
+</blockquote>
+</li>
+</ul>
+<p>=================== RPC ===================</p>
+<ul>
+<li><p>config 配置层: 对外配置接口，以 ServiceConfig, ReferenceConfig 为中心，可以直接初始化配置类，也可以通过 Spring 解析配置生成配置类。</p>
+<blockquote>
+<p>配置层，主要是对 Dubbo 进行各种配置的。</p>
+</blockquote>
+</li>
+<li><p>proxy 服务代理层：服务接口透明代理，生成服务的客户端 Stub 和服务器端 Skeleton, 扩展接口为 ProxyFactory 。</p>
+<blockquote>
+<p>服务代理层，无论是 consumer 还是 provider，Dubbo 都会给你生成代理，代理之间进行网络通信。可以类比成 Feign 对于 consumer ，Spring MVC 对于 provider 。</p>
+</blockquote>
+</li>
+<li><p>registry 注册中心层：封装服务地址的注册与发现，以服务 URL 为中心，扩展接口为 RegistryFactory, Registry, RegistryService 。</p>
+<blockquote>
+<p>服务注册层，负责服务的注册与发现。可以类比成 Eureka Client。</p>
+</blockquote>
+</li>
+<li><p>cluster 路由层：封装多个提供者的路由及负载均衡，并桥接注册中心，以 Invoker 为中心，扩展接口为 Cluster, Directory, Router, LoadBalance 。</p>
+<blockquote>
+<p>集群层，封装多个服务提供者的路由以及负载均衡，将多个实例组合成一个服务。可以类比成 Ribbon。</p>
+</blockquote>
+</li>
+<li><p>monitor 监控层：RPC 调用次数和调用时间监控，以 Statistics 为中心，扩展接口为 MonitorFactory, Monitor, MonitorService 。</p>
+<blockquote>
+<p>监控层，对 rpc 接口的调用次数和调用时间进行监控。SkyWalking 基于 MonitorFilter 实现增强，从而透明化埋点监控。</p>
+</blockquote>
+</li>
+</ul>
+<p>=================== Remoting ===================</p>
+<ul>
+<li><p>protocol 远程调用层：封将 RPC 调用，以 Invocation, Result 为中心，扩展接口为 Protocol, Invoker, Exporter 。</p>
+<blockquote>
+<p>远程调用层，封装 rpc 调用。</p>
+</blockquote>
+</li>
+<li><p>exchange 信息交换层：封装请求响应模式，同步转异步，以 Request, Response 为中心，扩展接口为 Exchanger, ExchangeChannel, ExchangeClient, ExchangeServer 。</p>
+<blockquote>
+<p>信息交换层，封装请求响应模式，同步转异步。</p>
+</blockquote>
+</li>
+<li><p>transport 网络传输层：抽象 mina 和 netty 为统一接口，以 Message 为中心，扩展接口为 Channel, Transporter, Client, Server, Codec 。</p>
+<blockquote>
+<p>网络传输层，抽象 mina 和 netty 为统一接口。</p>
+</blockquote>
+</li>
+<li><p>serialize 数据序列化层：可复用的一些工具，扩展接口为 Serialization, ObjectInput, ObjectOutput, ThreadPool 。</p>
+<blockquote>
+<p>数据序列化层。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Dubbo-调用流程"><a href="#Dubbo-调用流程" class="headerlink" title="Dubbo 调用流程"></a>Dubbo 调用流程</h2><img src="/2021/09/27/interview-dubbo/dubbo-02.png" class="">
+
+<ul>
+<li><p>Provider</p>
+<ul>
+<li>第 0 步，start 启动服务。</li>
+<li>第 1 步，register 注册服务到注册中心。</li>
+</ul>
+</li>
+<li><p>Consumer</p>
+<ul>
+<li><p>第 2 步，subscribe 向注册中心订阅服务。</p>
+<ul>
+<li>注意，只订阅使用到的服务。</li>
+<li>再注意，首次会拉取订阅的服务列表，缓存在本地。</li>
+</ul>
+</li>
+<li><p>【异步】第 3 步，notify 当服务发生变化时，获取最新的服务列表，更新本地缓存。</p>
+</li>
+</ul>
+</li>
+<li><p>invoke 调用</p>
+<ul>
+<li>Consumer 直接发起对 Provider 的调用，无需经过注册中心。而对多个 Provider 的负载均衡，Consumer 通过 cluster 组件实现。</li>
+</ul>
+</li>
+<li><p>count 监控</p>
+<ul>
+<li>【异步】Consumer 和 Provider 都异步通知监控中心。</li>
+</ul>
+</li>
+</ul>
+<p>下面这张图可以更立体的展示 Dubbo 的调用流程</p>
+<img src="/2021/09/27/interview-dubbo/dubbo-03.png" class="">
+
+<ul>
+<li>注意，图中的【代理】指的是 proxy 代理服务层，和 Consumer 或 Provider 在同一进城中。</li>
+<li>注意，图中的【负载均衡】指的是 cluster 路由层，和 Consumer 或 Provider 在同一进程中。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.processon.com/view/link/5f4899995653bb0c71dc4c1a">手动绘制 dubbo 调用图</a></p>
+<h2 id="Dubbo-调用是同步的吗"><a href="#Dubbo-调用是同步的吗" class="headerlink" title="Dubbo 调用是同步的吗"></a>Dubbo 调用是同步的吗</h2><p>默认情况下，调用是同步的方式。</p>
+<h2 id="谈谈对-Dubbo-的异常处理机制？"><a href="#谈谈对-Dubbo-的异常处理机制？" class="headerlink" title="谈谈对 Dubbo 的异常处理机制？"></a>谈谈对 Dubbo 的异常处理机制？</h2><p>Dubbo 异常处理机制涉及的内容比较多，核心在于 Provider 的 异常过滤器 ExceptionFilter 对调用结果的各种情况的处理。</p>
+<ul>
+<li>强烈推荐 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq315737546/article/details/53915067">dubbo(四)异常处理</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/mj158518/article/details/51228649">浅谈dubbo的ExceptionFilter异常处理</a></li>
+</ul>
+<h2 id="Dubbo-如何做参数校验？"><a href="#Dubbo-如何做参数校验？" class="headerlink" title="Dubbo 如何做参数校验？"></a>Dubbo 如何做参数校验？</h2><blockquote>
+<p>参数验证功能是基于 JSR303 实现的，用户只需标识 JSR303 标准的验证 annotation，并通过声明 filter 来实现验证。</p>
+</blockquote>
+<ul>
+<li>参数校验功能，通过参数校验过滤器 ValidationFilter 来实现。</li>
+<li>ValidationFilter 在 Dubbo Provider 和 Consumer 都可生效<ul>
+<li>如果我们将校验注解写在 Service 接口的方法上，那么 Consumer 在本地就会校验。如果校验不通过，直接抛出校验失败的异常，不会发起 Dubbo 调用。</li>
+<li>如果我们将校验注解写在 Service 实现的方法上，那么 Consumer 在本地不会校验，而是由 Provider 校验。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Dubbo-可以对调用结果进行缓存吗"><a href="#Dubbo-可以对调用结果进行缓存吗" class="headerlink" title="Dubbo 可以对调用结果进行缓存吗?"></a>Dubbo 可以对调用结果进行缓存吗?</h2><p>Dubbo 通过 CacheFilter 过滤器，提供结果缓存的功能，且既可以适用于 Consumer 也可以适用于 Provider 。<br>通过结果缓存，用于加速热门数据的访问速度，Dubbo 提供声明式缓存，以减少用户加缓存的工作量。<br>Dubbo 目前提供三种实现：</p>
+<ul>
+<li>lru ：基于最近最少使用原则删除多余缓存，保持最热的数据被缓存。</li>
+<li>threadlocal ：当前线程缓存，比如一个页面渲染，用到很多 portal，每个 portal 都要去查用户信息，通过线程缓存，可以减少这种多余访问。</li>
+<li>jcache ：与 JSR107 集成，可以桥接各种缓存实现。</li>
+</ul>
+<h2 id="注册中心挂了还可以通信吗？"><a href="#注册中心挂了还可以通信吗？" class="headerlink" title="注册中心挂了还可以通信吗？"></a>注册中心挂了还可以通信吗？</h2><p>可以。对于正在运行的 Consumer 调用 Provider 是不需要经过注册中心，所以不受影响。并且，Consumer 进程中，内存已经缓存了 Provider 列表。<br>那么，此时 Provider 如果下线呢？如果 Provider 是正常关闭，它会主动且直接对和其处于连接中的 Consumer 们，发送一条“我要关闭”了的消息。那么，Consumer 们就不会调用该 Provider ，而调用其它的 Provider 。<br>另外，因为 Consumer 也会持久化 Provider 列表到本地文件。所以，此处如果 Consumer 重启，依然能够通过本地缓存的文件，获得到 Provider 列表。<br>再另外，一般情况下，注册中心是一个集群，如果一个节点挂了，Dubbo Consumer 和 Provider 将自动切换到集群的另外一个节点上。</p>
+<h2 id="Dubbo-在-Zookeeper-存储了哪些信息？"><a href="#Dubbo-在-Zookeeper-存储了哪些信息？" class="headerlink" title="Dubbo 在 Zookeeper 存储了哪些信息？"></a>Dubbo 在 Zookeeper 存储了哪些信息？</h2>
+
+<blockquote>
+<p>流程说明：</p>
+<ul>
+<li>服务提供者启动时: 向 /dubbo/com.foo.BarService/providers 目录下写入自己的 URL 地址</li>
+<li>服务消费者启动时: 订阅 /dubbo/com.foo.BarService/providers 目录下的提供者 URL 地址。并向 /dubbo/com.foo.BarService/consumers 目录下写入自己的 URL 地址</li>
+<li>监控中心启动时: 订阅 /dubbo/com.foo.BarService 目录下的所有提供者和消费者 URL 地址。</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>在图中，我们可以看到 Zookeeper 的节点层级，自上而下是：</p>
+<ul>
+<li>Root 层：根目录，可通过 &lt;dubbo:registry group=”dubbo” /&gt; 的 “group” 设置 Zookeeper 的根节点，缺省使用 “dubbo” </li>
+<li>Service 层：服务接口全名。</li>
+<li>Type 层：分类。目前除了我们在图中看到的 “providers”( 服务提供者列表 ) “consumers”( 服务消费者列表 ) 外，还有 “routes”( 路由规则列表 ) 和 “configurations”( 配置规则列表 )。</li>
+<li>URL 层：URL ，根据不同 Type 目录，下面可以是服务提供者 URL 、服务消费者 URL 、路由规则 URL 、配置规则 URL 。</li>
+<li>实际上 URL 上带有 “category” 参数，已经能判断每个 URL 的分类，但是 Zookeeper 是基于节点目录订阅的，所以增加了 Type 层。</li>
+</ul>
+</li>
+<li><p>实际上，服务消费者启动后，不仅仅订阅了 “providers” 分类，也订阅了 “routes” “configurations” 分类。</p>
+</li>
+</ul>
+<h2 id="Dubbo-Provider-如何实现优雅停机？"><a href="#Dubbo-Provider-如何实现优雅停机？" class="headerlink" title="Dubbo Provider 如何实现优雅停机？"></a>Dubbo Provider 如何实现优雅停机？</h2><blockquote>
+<p>Dubbo 是通过 JDK 的 ShutdownHook 来完成优雅停机的，所以如果用户使用 kill -9 PID 等强制关闭指令，是不会执行优雅停机的，只有通过 kill PID 时，才会执行。</p>
+</blockquote>
+<p>因为大多数情况下，Dubbo 的声明周期是交给 Spring 进行管理，所以在最新的 Dubbo 版本中，增加了对 Spring 关闭事件的监听，从而关闭 Dubbo 服务</p>
+<p><strong>服务提供方的优雅停机过程</strong><br><strong>服务消费方的优雅停机过程</strong></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#interview" >
+    <span class="tag-code">interview</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/07/22/java/basic/">
+        <span class="nav-arrow">← </span>
+        
+          Java 学习笔记 - 基础
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Dubbo-%E9%9D%A2%E8%AF%95%E9%A2%98%E7%AC%94%E8%AE%B0"><span class="toc-nav-text">Dubbo 面试题笔记</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E6%9C%89%E5%87%A0%E7%A7%8D%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">Dubbo 有几种配置方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E5%92%8C-spring-boot-%E8%BF%9B%E8%A1%8C%E9%9B%86%E6%88%90"><span class="toc-nav-text">Dubbo 和 spring boot 进行集成</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E6%A1%86%E6%9E%B6%E7%9A%84%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="toc-nav-text">Dubbo 框架的分层设计</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">Dubbo 调用流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E8%B0%83%E7%94%A8%E6%98%AF%E5%90%8C%E6%AD%A5%E7%9A%84%E5%90%97"><span class="toc-nav-text">Dubbo 调用是同步的吗</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%B0%88%E8%B0%88%E5%AF%B9-Dubbo-%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6%EF%BC%9F"><span class="toc-nav-text">谈谈对 Dubbo 的异常处理机制？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E5%A6%82%E4%BD%95%E5%81%9A%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C%EF%BC%9F"><span class="toc-nav-text">Dubbo 如何做参数校验？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E5%8F%AF%E4%BB%A5%E5%AF%B9%E8%B0%83%E7%94%A8%E7%BB%93%E6%9E%9C%E8%BF%9B%E8%A1%8C%E7%BC%93%E5%AD%98%E5%90%97"><span class="toc-nav-text">Dubbo 可以对调用结果进行缓存吗?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%8C%82%E4%BA%86%E8%BF%98%E5%8F%AF%E4%BB%A5%E9%80%9A%E4%BF%A1%E5%90%97%EF%BC%9F"><span class="toc-nav-text">注册中心挂了还可以通信吗？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-%E5%9C%A8-Zookeeper-%E5%AD%98%E5%82%A8%E4%BA%86%E5%93%AA%E4%BA%9B%E4%BF%A1%E6%81%AF%EF%BC%9F"><span class="toc-nav-text">Dubbo 在 Zookeeper 存储了哪些信息？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Dubbo-Provider-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA%EF%BC%9F"><span class="toc-nav-text">Dubbo Provider 如何实现优雅停机？</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2021/09/27/interview-dubbo/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "xiaokuicui";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Dubbo 面试笔记",
+        owner: "xiaokuicui",
+        repo: "xiaokuicui.github.io",
+        oauth: {
+          client_id: "8cfb250781885984f988",
+          client_secret: "6e97ff67546177ed763537725dce080eadae3062"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

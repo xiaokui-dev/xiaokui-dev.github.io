@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="xiaokui&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      spring-boot 学习笔记 - Junit 单元测试 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111867840-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-111867840-1');
+    </script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>spring-boot 学习笔记 - Junit 单元测试</h2>
+  <p class="post-date">2017-05-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="POM-依赖"><a href="#POM-依赖" class="headerlink" title="POM 依赖"></a>POM 依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Service-层单元测试"><a href="#Service-层单元测试" class="headerlink" title="Service 层单元测试"></a>Service 层单元测试</h3><p>在<code>src/test/java</code>目录下创建对应 Service 的测试类,代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@RunWith(SpringRunner.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findUserTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Optional&lt;User&gt; user = userService.findUserById(<span class="number">1L</span>);</span><br><span class="line"></span><br><span class="line">        Assert.assertThat(user.get().getUserName(), CoreMatchers.is(<span class="string">&quot;string&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@SpringBootTest</code>注解是普通的 Spring 项目（非 Spring Boot 项目）中编写测试代码所使用的<code>@ContextConfiguration</code>注解的替代品。其作用是用于确定如何装载 Spring 应用程序的上下文资源。 当运行 Spring Boot 应用程序测试时,它会自动的从当前测试类所在的包起一层一层向上搜索，直到找到一个<code>@SpringBootApplication</code>或<code>@SpringBootConfiguration</code>注释类为止。以此来确定如何装载 Spring 应用程序的上下文资源。只要按 Spring Boot 的约定组织代码结构,项目的主配置通常是可以被发现的。</p>
+<p>如果搜索算法搜索不到你项目的主配置文件，将报出异常：<code>java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=…) with your test</code>。</p>
+<p>解决办法是,手工指定你要装载的主配置文件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringRunner.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest(classes = SpringBootJpaApplication.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findUserTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Optional&lt;User&gt; user = userService.findUserById(<span class="number">1L</span>);</span><br><span class="line"></span><br><span class="line">        Assert.assertThat(user.get().getUserName(), CoreMatchers.is(<span class="string">&quot;string&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基于 Spring 环境的 Junit 集成测试还需要使用<code>@RunWith(SpringJUnit4ClassRunner.class)</code>注解,该注解能够改变 Junit 并让其运行在 Spring 的测试环境,以得到 Spring 测试环境的上下文支持。否则在 Junit 测试中，Bean 的自动装配等注解将不起作用。但由于 <code>SpringJUnit4ClassRunner</code> 不方便记忆，Spring 4.3 起提供了一个等同于 <code>SpringJUnit4ClassRunner</code> 的类 <code>SpringRunner</code>，因此可以简写成：<code>@RunWith(SpringRunner.class)</code>.</p>
+<h3 id="Controller-层单元测试"><a href="#Controller-层单元测试" class="headerlink" title="Controller 层单元测试"></a>Controller 层单元测试</h3><p>使用 MockMvc 对 Controller 层(API)做单元测试.MockMvc 实现了对 Http 请求的模拟,能够直接使用网络的形式,转换到 Controller 的调用,这样可以使得测试速度快、不依赖网络环境，而且提供了一套验证的工具，这样可以使得请求的验证统一而且很方便。</p>
+<p>Controller 类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/users&quot;)</span></span><br><span class="line"><span class="meta">@Api(value = &quot;/users&quot;,description = &quot;用户管理&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger logger = LoggerFactory.getLogger(UserController.class);</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;用户列表&quot;,notes = &quot;查询用户列表&quot;)</span></span><br><span class="line">    <span class="meta">@RequestMapping(value = &quot;/list&quot;,method = RequestMethod.GET,produces = &quot;application/json&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt;  <span class="title">getAll</span><span class="params">()</span></span>&#123;</span><br><span class="line">        logger.debug(<span class="string">&quot;查询用户列表&quot;</span>);</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        List&lt;User&gt; users = userService.findAll();</span><br><span class="line">        map.put(<span class="string">&quot;code&quot;</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;result&quot;</span>,users);</span><br><span class="line">        map.put(<span class="string">&quot;message&quot;</span>,<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;添加用户&quot;,notes = &quot;根据Users对象添加用户&quot;)</span></span><br><span class="line">    <span class="meta">@ApiImplicitParam(name = &quot;user&quot;,value = &quot;用户实体&quot;,required = true,dataType = &quot;user&quot;)</span></span><br><span class="line">    <span class="meta">@RequestMapping(value = &quot;/add&quot;,method = RequestMethod.POST,produces = &quot;application/json&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">saveUser</span><span class="params">(<span class="meta">@RequestBody</span> User user)</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        userService.saveUser(user);</span><br><span class="line">        map.put(<span class="string">&quot;code&quot;</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;message&quot;</span>,<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Controller 对应的测试类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringRunner.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> WebApplicationContext webApplicationContext;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> MockMvc mockMvc;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setupMockMvc</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//初始化 MockMvc 对象</span></span><br><span class="line">        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findUser</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        mockMvc.perform(MockMvcRequestBuilders.get(<span class="string">&quot;/users/list&quot;</span>)</span><br><span class="line">                                        .contentType(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">                                        .accept(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">                )</span><br><span class="line">                .andExpect(MockMvcResultMatchers.status().isOk())</span><br><span class="line">                .andDo(MockMvcResultHandlers.print());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveUser</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        String json = <span class="string">&quot;&#123;\&quot;gmtCreate\&quot;: \&quot;2018-04-17T19:48:03.113Z\&quot;, \&quot;userDescription\&quot;: \&quot;测试1\&quot;, \&quot;userName\&quot;: \&quot;测试1\&quot;, \&quot;userPassword\&quot;: \&quot;1111111\&quot;&#125;&quot;</span>;</span><br><span class="line">        mockMvc.perform(MockMvcRequestBuilders.post(<span class="string">&quot;/users/add&quot;</span>)</span><br><span class="line">                .contentType(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">                .accept(MediaType.APPLICATION_JSON_UTF8).content(json))</span><br><span class="line">                .andExpect(MockMvcResultMatchers.status().isOk())</span><br><span class="line">                .andDo(MockMvcResultHandlers.print());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 MockMvc 需要先用MockMvcBuilders使用构建MockMvc对象，如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Before</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setupMockMvc</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//初始化 MockMvc 对象</span></span><br><span class="line">    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MockMvc 的方法:</p>
+<ol>
+<li><code>mockMvc.perform</code> 执行一个请求.</li>
+<li><code>MockMvcRequestBuilders.post(&quot;/users/add&quot;)</code>构造一个请求,Get 请求就用 .get 方法.</li>
+<li><code>.contentType(MediaType.APPLICATION_JSON_UTF8)</code>代表发送端发送的数据格式是<code>application/json;charset=UTF-8</code></li>
+<li><code>.accept(MediaType.APPLICATION_JSON_UTF8)</code>代表客户端希望接受的数据类型为<code>application/json;charset=UTF-8</code></li>
+<li><code>.content(json)</code>代表请求的参数.</li>
+<li><code>.andExpect</code>添加执行完成后的断言</li>
+<li><code>.andExpect(MockMvcResultMatchers.status().isOk())</code>方法看请求的状态响应码是否为200如果不是则抛异常,测试不通过.</li>
+<li><code>.andDo</code>添加一个结果处理器，表示要对结果做点什么事情,此处使用<code>MockMvcResultHandlers.print()</code>输出整个响应结果信息.</li>
+</ol>
+<p>测试结果如下:</p>
+<p><img src="https://raw.githubusercontent.com/xiaokuicui/xiaokuicui.github.io/master/assets/images/junit_result.jpg"></p>
+<h3 id="新断言-assertThat"><a href="#新断言-assertThat" class="headerlink" title="新断言 assertThat"></a>新断言 assertThat</h3><p>JUnit 4.4 结合 Hamcrest 提供了一个全新的断言语法—-assertThat,以前 JUnit 提供了很多的 assertion 语句,如 assertEquals,assertNotSame,assertFalse,assertTrue,assertNotNull,assertNull 等.现在只使用 assertThat 一个断言语句,结合 Hamcrest 提供的匹配符,就可以替代所有的 assertion 语句.</p>
+<p>assertThat 使用举例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一般匹配符</span></span><br><span class="line"><span class="comment">// allOf匹配符表明如果接下来的所有条件必须都成立测试才通过，相当于&quot;与&quot;（&amp;&amp;）</span></span><br><span class="line">Assert.assertThat( testedNumber, CoreMatchers.allOf( greaterThan(<span class="number">8</span>), lessThan(<span class="number">16</span>) ) );</span><br><span class="line"><span class="comment">// anyOf匹配符表明如果接下来的所有条件只要有一个成立则测试通过，相当于&quot;或&quot;（||）</span></span><br><span class="line">Assert.assertThat( testedNumber, CoreMatchers.anyOf( greaterThan(<span class="number">16</span>), lessThan(<span class="number">8</span>) ) );</span><br><span class="line"><span class="comment">// anything匹配符表明无论什么条件，永远为true</span></span><br><span class="line">Assert.assertThat( testedNumber, CoreMatchers.anything() );</span><br><span class="line"><span class="comment">// is匹配符表明如果前面待测的object等于后面给出的object，则测试通过</span></span><br><span class="line">Assert.assertThat( testedString, CoreMatchers.is( <span class="string">&quot;developerWorks&quot;</span> ) );</span><br><span class="line"><span class="comment">// not匹配符和is匹配符正好相反，表明如果前面待测的object不等于后面给出的object，则测试通过</span></span><br><span class="line">Assert.assertThat( testedString, CoreMatchers.not( <span class="string">&quot;developerWorks&quot;</span> ) );</span><br><span class="line"></span><br><span class="line"><span class="comment">//字符串相关匹配符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// containsString匹配符表明如果测试的字符串testedString包含子字符串&quot;developerWorks&quot;则测试通过</span></span><br><span class="line">Assert.assertThat( testedString, CoreMatchers.containsString( <span class="string">&quot;developerWorks&quot;</span> ) );</span><br><span class="line"><span class="comment">// endsWith匹配符表明如果测试的字符串testedString以子字符串&quot;developerWorks&quot;结尾则测试通过</span></span><br><span class="line">Assert.assertThat( testedString, CoreMatchers.endsWith( <span class="string">&quot;developerWorks&quot;</span> ) );</span><br><span class="line"><span class="comment">// startsWith匹配符表明如果测试的字符串testedString以子字符串&quot;developerWorks&quot;开始则测试通过</span></span><br><span class="line">Assert.assertThat( testedString, CoreMatchers.startsWith( <span class="string">&quot;developerWorks&quot;</span> ) );</span><br><span class="line"><span class="comment">// equalTo匹配符表明如果测试的testedValue等于expectedValue则测试通过，equalTo可以测试数值之间，字</span></span><br><span class="line"><span class="comment">//符串之间和对象之间是否相等，相当于Object的equals方法</span></span><br><span class="line">Assert.assertThat( testedValue, CoreMatchers.equalTo( expectedValue ) );</span><br><span class="line"><span class="comment">// equalToIgnoringCase匹配符表明如果测试的字符串testedString在忽略大小写的情况下等于</span></span><br><span class="line"><span class="comment">//&quot;developerWorks&quot;则测试通过</span></span><br><span class="line">Assert.assertThat( testedString, CoreMatchers.equalToIgnoringCase( <span class="string">&quot;developerWorks&quot;</span> ) );</span><br><span class="line"><span class="comment">// equalToIgnoringWhiteSpace匹配符表明如果测试的字符串testedString在忽略头尾的任意个空格的情况下等</span></span><br><span class="line"><span class="comment">//于&quot;developerWorks&quot;则测试通过，注意：字符串中的空格不能被忽略</span></span><br><span class="line">Assert.assertThat( testedString, CoreMatchers.equalToIgnoringWhiteSpace( <span class="string">&quot;developerWorks&quot;</span> ) );</span><br><span class="line"></span><br><span class="line"><span class="comment">//数值相关匹配符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// closeTo匹配符表明如果所测试的浮点型数testedDouble在20.0±0.5范围之内则测试通过</span></span><br><span class="line">Assert.assertThat( testedDouble, CoreMatchers.closeTo( <span class="number">20.0</span>, <span class="number">0.5</span> ) );</span><br><span class="line"><span class="comment">// greaterThan匹配符表明如果所测试的数值testedNumber大于16.0则测试通过</span></span><br><span class="line">Assert.assertThat( testedNumber, CoreMatchers.greaterThan(<span class="number">16.0</span>) );</span><br><span class="line"><span class="comment">// lessThan匹配符表明如果所测试的数值testedNumber小于16.0则测试通过</span></span><br><span class="line">Assert.assertThat( testedNumber, CoreMatchers.lessThan (<span class="number">16.0</span>) );</span><br><span class="line"><span class="comment">// greaterThanOrEqualTo匹配符表明如果所测试的数值testedNumber大于等于16.0则测试通过</span></span><br><span class="line">Assert.assertThat( testedNumber, CoreMatchers.greaterThanOrEqualTo (<span class="number">16.0</span>) );</span><br><span class="line"><span class="comment">// lessThanOrEqualTo匹配符表明如果所测试的数值testedNumber小于等于16.0则测试通过</span></span><br><span class="line">Assert.assertThat( testedNumber, CoreMatchers.lessThanOrEqualTo (<span class="number">16.0</span>) );</span><br><span class="line"></span><br><span class="line"><span class="comment">//collection相关匹配符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// hasEntry匹配符表明如果测试的Map对象mapObject含有一个键值为&quot;key&quot;对应元素值为&quot;value&quot;的Entry项则</span></span><br><span class="line"><span class="comment">//测试通过</span></span><br><span class="line">Assert.assertThat( mapObject, CoreMatchers.hasEntry( <span class="string">&quot;key&quot;</span>, <span class="string">&quot;value&quot;</span> ) );</span><br><span class="line"><span class="comment">// hasItem匹配符表明如果测试的迭代对象iterableObject含有元素“element”项则测试通过</span></span><br><span class="line">Assert.assertThat( iterableObject, CoreMatchers.hasItem ( <span class="string">&quot;element&quot;</span> ) );</span><br><span class="line"><span class="comment">// hasKey匹配符表明如果测试的Map对象mapObject含有键值“key”则测试通过</span></span><br><span class="line">Assert.assertThat( mapObject, CoreMatchers.hasKey ( <span class="string">&quot;key&quot;</span> ) );</span><br><span class="line"><span class="comment">// hasValue匹配符表明如果测试的Map对象mapObject含有元素值“value”则测试通过</span></span><br><span class="line">Assert.assertThat( mapObject, CoreMatchers.hasValue ( <span class="string">&quot;key&quot;</span> ) );</span><br></pre></td></tr></table></figure>
+
+<h3 id="单元测试回滚"><a href="#单元测试回滚" class="headerlink" title="单元测试回滚"></a>单元测试回滚</h3><p>单元测试的时候如果不想造成垃圾数据,可以开启事物功能,在方法或者类头部添加<code>@Transactional</code>注解即可,如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveUser</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    String json = <span class="string">&quot;&#123;\&quot;gmtCreate\&quot;: \&quot;2018-04-17T19:48:03.113Z\&quot;, \&quot;userDescription\&quot;: \&quot;测试回滚\&quot;, \&quot;userName\&quot;: \&quot;测试回滚\&quot;, \&quot;userPassword\&quot;: \&quot;1111111\&quot;&#125;&quot;</span>;</span><br><span class="line">    mockMvc.perform(MockMvcRequestBuilders.post(<span class="string">&quot;/users/add&quot;</span>)</span><br><span class="line">            .contentType(MediaType.APPLICATION_JSON_UTF8)</span><br><span class="line">            .accept(MediaType.APPLICATION_JSON_UTF8).content(json))</span><br><span class="line">            .andExpect(MockMvcResultMatchers.status().isOk())</span><br><span class="line">            .andDo(MockMvcResultHandlers.print());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果想关闭回滚,加上<code>@Rollback(false)</code>注解即可.支持传入一个参数value,默认true即回滚,false不回滚.</p>
+<p>如果你使用的数据库是Mysql,有时候会发现加了注解<code>@Transactional</code>也不会回滚，那么你就要查看一下你的默认引擎是不是InnoDB,如果不是就要改成InnoDB。 目前Mysql比较常用的两个数据库存储引擎是MyISAM和InnoDB,它俩的主要不同点在于性能和事务控制上。</p>
+<ul>
+<li>MyISAM适合：(1)做很多count 的计算;(2)插入不频繁,查询非常频繁;(3)没有事务。</li>
+<li>InnoDB适合：(1)可靠性要求比较高,或者要求事务;(2)表更新和查询都相当的频繁,并且表锁定的机会比较大的情况。(4)性能较好的服务器,比如单独的数据库服务器，像阿里云的关系型数据库RDS就推荐使用InnoDB引擎。</li>
+</ul>
+<p>查看MySQL当前默认的存储引擎:<code>MySQL show variables like &#39;%storage_engine%&#39;;</code></p>
+<p>查看单个表用的存储引擎(在显示结果里参数engine后面的就表示该表当前用的存储引擎):<code>show create table t_user;</code></p>
+<p>将单个表修改为InnoDB存储引擎(也可以用此命令将InnoDB换为MyISAM)：<code>ALTER TABLE t_user ENGINE=INNODB;</code></p>
+<hr>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#spring boot" >
+    <span class="tag-code">spring boot</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/05/03/spring-boot/spring-boot-jsp/">
+        <span class="nav-arrow">← </span>
+        
+          spring-boot 学习笔记 - 集成 JSP
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/05/10/spring-boot/spring-boot-logger/">
+        
+          spring-boot 学习笔记 - 默认日志 logback 配置
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#POM-%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">POM 依赖</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Service-%E5%B1%82%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">Service 层单元测试</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Controller-%E5%B1%82%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">Controller 层单元测试</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%96%B0%E6%96%AD%E8%A8%80-assertThat"><span class="toc-nav-text">新断言 assertThat</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%9B%9E%E6%BB%9A"><span class="toc-nav-text">单元测试回滚</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2017/05/09/spring-boot/spring-boot-junit/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "xiaokuicui";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "spring-boot 学习笔记 - Junit 单元测试",
+        owner: "xiaokuicui",
+        repo: "xiaokuicui.github.io",
+        oauth: {
+          client_id: "8cfb250781885984f988",
+          client_secret: "6e97ff67546177ed763537725dce080eadae3062"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

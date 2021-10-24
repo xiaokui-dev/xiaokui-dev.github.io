@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="xiaokui&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      spring-boot 学习笔记 - 集成MyBatis,分页插件PageHelper, 通用Mapper | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111867840-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-111867840-1');
+    </script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>spring-boot 学习笔记 - 集成MyBatis,分页插件PageHelper, 通用Mapper</h2>
+  <p class="post-date">2017-05-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Spring Boot 整合 MyBatis 实现数据存储.并结合通用 Mapper、Mybatis Geneator 以及分页 PageHelper 来打造适合企业开发的模板框架.</p>
+<h1 id="Mybatis-POM-依赖"><a href="#Mybatis-POM-依赖" class="headerlink" title="Mybatis POM 依赖"></a>Mybatis POM 依赖</h1><ul>
+<li>引入整合 myBatis 的核心依赖 <code>mybatis-spring-boot-starter</code>,可以不添加 <code>spring-boot-starter-jdbc</code>.因为 <code>mybatis-spring-boot-starter</code> 依赖中存在 <code>spring-boot-starter-jdbc</code>.</li>
+<li>引入连接 mysql 的必要依赖<code>mysql-connector-java</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;<span class="number">1.3</span><span class="number">.2</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>添加了 <code>mybatis-spring-boot-starter</code> 之后, Spring Boot 会自动加载 <code>spring.datasource.*</code>相关配置(<code>application.properties</code>中配置);自动创建使用该 DataSource 的 <code>SqlSessionFactoryBean</code> 以及 <code>SqlSessionTemplate</code>;自动扫描 Mappers 连接到 <code>SqlSessionTemplate</code> 并注册到 Spring 上下文中.</p>
+<p>在启动类中添加对 mapper 包扫描 <code>@MapperScan</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@MapperScan(&quot;com.neo.mapper&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="数据源配置"><a href="#数据源配置" class="headerlink" title="数据源配置"></a>数据源配置</h1><p>在 src/main/resources/application.properties 中配置数据源信息.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.driver-<span class="class"><span class="keyword">class</span>-<span class="title">name</span> </span>= com.mysql.jdbc.Driver</span><br><span class="line">spring.datasource.url  =jdbc:mysql:<span class="comment">//localhost:3306/spring-boot?useUnicode=true&amp;characterEncoding=utf-8</span></span><br><span class="line">spring.datasource.username = root</span><br><span class="line">spring.datasource.password = root</span><br></pre></td></tr></table></figure>
+
+<h1 id="SQL-脚本初始化"><a href="#SQL-脚本初始化" class="headerlink" title="SQL 脚本初始化"></a>SQL 脚本初始化</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE `spring-boot-test`;</span><br><span class="line"></span><br><span class="line">USE `spring-boot-test`;</span><br><span class="line"></span><br><span class="line">DROP TABLE IF EXISTS `t_user`;</span><br><span class="line"></span><br><span class="line">CREATE TABLE `t_user` (</span><br><span class="line">  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT &#x27;用户ID&#x27;,</span><br><span class="line">  `user_name` varchar(100) NOT NULL COMMENT &#x27;用户名称&#x27;,</span><br><span class="line">  `user_password` varchar(50) NOT NULL COMMENT &#x27;用户密码&#x27;,</span><br><span class="line">  `user_description` text NOT NULL COMMENT &#x27;用户描述&#x27;,</span><br><span class="line">  `gmt_create` datetime NOT NULL comment &#x27;创建时间&#x27;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB COMMENT &#x27;用户表&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="集成-MyBatis"><a href="#集成-MyBatis" class="headerlink" title="集成 MyBatis"></a>集成 MyBatis</h1><h2 id="方案一-通过注解的方式"><a href="#方案一-通过注解的方式" class="headerlink" title="方案一 通过注解的方式"></a>方案一 通过注解的方式</h2><h3 id="实体对象"><a href="#实体对象" class="headerlink" title="实体对象"></a>实体对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> xiaokui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2018-04-02 16:32</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">3630439091622902808L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String userPassword;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String userDescription;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date gmtCreate;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略getter和setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Mapper相关"><a href="#Mapper相关" class="headerlink" title="Mapper相关"></a>Mapper相关</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span> <span class="comment">//Component注解不添加也没事，只是不加service那边引入UserMapper会有错误提示，但不影响</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Insert(&quot;insert into t_user(user_name,user_password,user_description,gmt_create) values(#&#123;userName&#125;,#&#123;userPassword&#125;,#&#123;userDescription&#125;,#&#123;now()&#125;)&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(User user)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Update(&quot;update t_user set user_name=#&#123;userName&#125;,user_password=#&#123;userPassword&#125;,user_description=#&#123;userDescription&#125; where id = #&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(User user)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Delete(&quot;delete from t_user where id = #&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteById</span><span class="params">(Long id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Select(&quot;select id,user_name,user_description,gmt_create from t_user &quot;)</span></span><br><span class="line">    <span class="function">List&lt;User&gt; <span class="title">getAll</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Select(&quot;select id,user_name,user_description,gmt_create from t_user where id = #&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function">User <span class="title">getUserById</span><span class="params">(Long id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Service相关"><a href="#Service相关" class="headerlink" title="Service相关"></a>Service相关</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(User user)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(User user)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">deleteById</span><span class="params">(Long id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;User&gt; <span class="title">getAll</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">User <span class="title">getUserById</span><span class="params">(Long id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Controller-相关"><a href="#Controller-相关" class="headerlink" title="Controller 相关"></a>Controller 相关</h3><p>定义一组 RESTful API 接口进行测试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/users&quot;)</span></span><br><span class="line"><span class="meta">@Api(value = &quot;/users&quot;,description = &quot;用户管理&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;用户列表&quot;,notes = &quot;查询用户列表&quot;)</span></span><br><span class="line">    <span class="meta">@RequestMapping(value = &quot;/list&quot;,method = RequestMethod.GET,produces = &quot;application/json&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt;  <span class="title">getAll</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        List&lt;User&gt; users = userService.getAll();</span><br><span class="line">        map.put(<span class="string">&quot;code&quot;</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;result&quot;</span>,users);</span><br><span class="line">        map.put(<span class="string">&quot;message&quot;</span>,<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;添加用户&quot;,notes = &quot;根据Users对象添加用户&quot;)</span></span><br><span class="line">    <span class="meta">@ApiImplicitParam(name = &quot;user&quot;,value = &quot;用户实体&quot;,required = true,dataType = &quot;user&quot;)</span></span><br><span class="line">    <span class="meta">@RequestMapping(value = &quot;/add&quot;,method = RequestMethod.POST,produces = &quot;application/json&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">saveUser</span><span class="params">(<span class="meta">@RequestBody</span> User user)</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> result = userService.add(user);</span><br><span class="line">        map.put(<span class="string">&quot;code&quot;</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;result&quot;</span>,result);</span><br><span class="line">        map.put(<span class="string">&quot;message&quot;</span>,<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方案二-通过XML的方式"><a href="#方案二-通过XML的方式" class="headerlink" title="方案二 通过XML的方式"></a>方案二 通过XML的方式</h2><h3 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h3><p>在 <code>src/main/resources/mapper</code> 路径下创建<code>UserMapper.xml</code>文件.标明映射的 Mapper 类、JavaBean 及 SQL.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;org.xiaokui.springboot.mybatis.domain.UserMapper2&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;userMap&quot;</span> <span class="attr">type</span>=<span class="string">&quot;org.xiaokui.springboot.mybatis.domain.User&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">&quot;id&quot;</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;userName&quot;</span> <span class="attr">column</span>=<span class="string">&quot;user_name&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;gmtCreate&quot;</span> <span class="attr">column</span>=<span class="string">&quot;gmt_create&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findUserById&quot;</span>  <span class="attr">resultMap</span>=<span class="string">&quot;userMap&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Long&quot;</span>&gt;</span></span><br><span class="line">        select id, user_name, gmt_create from t_user where id = #&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在<code>src/main/resources/application.properties</code> 中配置映射文件的路径.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#指定映射文件</span><br><span class="line">mybatis.mapperLocations=classpath:mapper/*.xml</span><br><span class="line"># 指定javabean所在包</span><br><span class="line">mybatis.type-aliases-package=org.xiaokui.springboot.mybatis.domain</span><br></pre></td></tr></table></figure>
+
+<h3 id="Mapper相关-1"><a href="#Mapper相关-1" class="headerlink" title="Mapper相关"></a>Mapper相关</h3><p>新建<code>UserMapper2.java</code>接口类,无需相关实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">User <span class="title">findUserById</span><span class="params">(Long id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Controller相关"><a href="#Controller相关" class="headerlink" title="Controller相关"></a>Controller相关</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/users2&quot;)</span></span><br><span class="line"><span class="meta">@Api(value = &quot;/users2&quot;,description = &quot;XML配置-用户管理2&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController2</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;查询用户&quot;,notes = &quot;根据id查询用户&quot;)</span></span><br><span class="line">    <span class="meta">@ApiImplicitParam(name = &quot;id&quot;,value = &quot;用户id&quot;,required = true)</span></span><br><span class="line">    <span class="meta">@RequestMapping(value = &quot;/show/&#123;id&#125;&quot;,method = RequestMethod.GET,produces = &quot;application/json&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">findByUserId</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span></span>&#123;</span><br><span class="line">        Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        User user = userService.findUserById(id);</span><br><span class="line">        map.put(<span class="string">&quot;code&quot;</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line">        map.put(<span class="string">&quot;result&quot;</span>,user);</span><br><span class="line">        map.put(<span class="string">&quot;message&quot;</span>,<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="集成通用-Mapper、分页插件-PageHelper-依赖"><a href="#集成通用-Mapper、分页插件-PageHelper-依赖" class="headerlink" title="集成通用 Mapper、分页插件 PageHelper 依赖"></a>集成通用 Mapper、分页插件 PageHelper 依赖</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--通用mapper--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>tk.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mapper-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--pagehelper--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.pagehelper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 引入mybatis-generator插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;mysql.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>tk.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mapper-generator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configurationFile</span>&gt;</span>$&#123;basedir&#125;/src/main/resources/generator/generatorConfig.xml<span class="tag">&lt;/<span class="name">configurationFile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">overwrite</span>&gt;</span>true<span class="tag">&lt;/<span class="name">overwrite</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">verbose</span>&gt;</span>true<span class="tag">&lt;/<span class="name">verbose</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>引入了<code>mybatis-generator-maven-plugin</code>插件,详细的配置可参考 <a target="_blank" rel="noopener" href="http://mbg.cndocs.ml/running/runningWithMaven.html">官方MyBatis Generator中文文档</a></p>
+<h1 id="MyBatis-Generator-配置"><a href="#MyBatis-Generator-配置" class="headerlink" title="MyBatis Generator 配置"></a>MyBatis Generator 配置</h1><p>在<code>src/main/resources/generator</code>路径下新建<code>generatorConfig.xml</code>文件,加入以下内容:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">generatorConfiguration</span></span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot;</span> <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">&quot;application.properties&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">&quot;Mysql&quot;</span> <span class="attr">targetRuntime</span>=<span class="string">&quot;MyBatis3Simple&quot;</span> <span class="attr">defaultModelType</span>=<span class="string">&quot;flat&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">type</span>=<span class="string">&quot;tk.mybatis.mapper.generator.MapperPlugin&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;mappers&quot;</span> <span class="attr">value</span>=<span class="string">&quot;org.xiaokui.springboot.mybatis.common.MyMapper&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--数据库链接地址账号密码--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">&quot;$&#123;spring.datasource.driver-class-name&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">connectionURL</span>=<span class="string">&quot;$&#123;spring.datasource.url&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">userId</span>=<span class="string">&quot;$&#123;spring.datasource.username&#125;&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">password</span>=<span class="string">&quot;$&#123;spring.datasource.password&#125;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--生成Model类存放位置--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">&quot;org.xiaokui.springboot.mybatis.domain&quot;</span> <span class="attr">targetProject</span>=<span class="string">&quot;src/main/java&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--生成映射文件存放位置--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">&quot;mapper&quot;</span> <span class="attr">targetProject</span>=<span class="string">&quot;src/main/resources&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        生成Mapper类存放位置</span></span><br><span class="line"><span class="comment">        type=&quot;ANNOTATEDMAPPER&quot;,生成Java Model 和基于注解的Mapper对象</span></span><br><span class="line"><span class="comment">        type=&quot;XMLMAPPER&quot;,生成SQLMap XML文件和独立的Mapper接口</span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">targetPackage</span>=<span class="string">&quot;org.xiaokui.springboot.mybatis.mapper&quot;</span> <span class="attr">targetProject</span>=<span class="string">&quot;src/main/java&quot;</span> <span class="attr">type</span>=<span class="string">&quot;XMLMAPPER&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--生成对应表及类名 去掉Mybatis Generator生成的一堆 example--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">&quot;t_city&quot;</span> <span class="attr">domainObjectName</span>=<span class="string">&quot;City&quot;</span> <span class="attr">enableCountByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">enableUpdateByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">enableDeleteByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">enableSelectByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">selectByExampleQueryId</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">generatedKey</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> <span class="attr">sqlStatement</span>=<span class="string">&quot;Mysql&quot;</span> <span class="attr">identity</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">&quot;t_country&quot;</span> <span class="attr">domainObjectName</span>=<span class="string">&quot;Country&quot;</span> <span class="attr">enableCountByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">enableUpdateByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">enableDeleteByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">enableSelectByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">selectByExampleQueryId</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">generatedKey</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> <span class="attr">sqlStatement</span>=<span class="string">&quot;Mysql&quot;</span> <span class="attr">identity</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>tk.mybatis.mapper.generator.MapperPlugin</code>用来指定继承通用 Mapper 的接口.生成的 Mapper 会继承这个类. 运行命令:<code>mvn mybatis-generator:generate</code>.就会自动生成表对应的 Model,Mappe 以及 XML.</p>
+<h1 id="通用-Mapper-配置"><a href="#通用-Mapper-配置" class="headerlink" title="通用 Mapper 配置"></a>通用 Mapper 配置</h1><p>通用 Mapper 可以极大的方便开发人员,对单表封装了许多通用方法，省掉自己写增删改查的sql. 实现一个接口继承通用的 Mapper.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyMapper</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">T</span>&gt;,<span class="title">MySqlMapper</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//TODO</span></span><br><span class="line">    <span class="comment">//FIXME 特别注意，该接口不能被扫描到，否则会出错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在<code>src/main/resources/application.properties</code>加入以下内容</li>
+</ol>
+  <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定javabean所在包</span></span><br><span class="line"><span class="meta">mybatis.type-aliases-package</span>=<span class="string">org.xiaokui.springboot.mybatis.domain</span></span><br><span class="line"><span class="comment"># 指定映射文件</span></span><br><span class="line"><span class="meta">mybatis.mapper-locations</span>=<span class="string">classpath:mapper/*.xml</span></span><br><span class="line"><span class="comment"># mappers 多个接口时逗号隔开</span></span><br><span class="line"><span class="meta">mapper.mappers</span>=<span class="string">org.xiaokui.springboot.mybatis.common.MyMapper</span></span><br><span class="line"><span class="meta">mapper.not-empty</span>=<span class="string">false</span></span><br><span class="line"><span class="meta">mapper.identity</span>=<span class="string">MYSQL</span></span><br><span class="line"><span class="comment"># pagehelper</span></span><br><span class="line"><span class="meta">pagehelper.helperDialect</span>=<span class="string">mysql</span></span><br><span class="line"><span class="meta">pagehelper.reasonable</span>=<span class="string">true</span></span><br><span class="line"><span class="meta">pagehelper.supportMethodsArguments</span>=<span class="string">true</span></span><br><span class="line"><span class="meta">pagehelper.params</span>=<span class="string">count=countSql</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>Server层</li>
+</ol>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountryServiceImpl</span> <span class="keyword">implements</span> <span class="title">CountryService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> CountryMapper countryMapper;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Country&gt; <span class="title">getAll</span><span class="params">(Country country)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (country.getPage() != <span class="keyword">null</span> &amp;&amp; country.getRows() != <span class="keyword">null</span>) &#123;</span><br><span class="line">       PageHelper.startPage(country.getPage(), country.getRows());</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> countryMapper.selectAll();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Country <span class="title">getById</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> countryMapper.selectByPrimaryKey(id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteById</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">    countryMapper.deleteByPrimaryKey(id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(Country country)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(country.getId() != <span class="keyword">null</span>)&#123;</span><br><span class="line">       countryMapper.updateByPrimaryKey(country);</span><br><span class="line">   &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">       countryMapper.insert(country);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Controller 层</li>
+</ol>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/countries&quot;)</span></span><br><span class="line"><span class="meta">@Api(value = &quot;/countries&quot;,description = &quot;国家管理&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountryController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> CountryService countryService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ApiOperation(value = &quot;获取国家列表&quot;,notes = &quot;查询国家列表&quot;)</span></span><br><span class="line"><span class="meta">@ApiImplicitParam(name = &quot;county&quot;,value = &quot;County实体&quot;,required = false,dataType = &quot;country&quot;)</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/list&quot;,method = RequestMethod.GET,produces = &quot;application/json&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Map&lt;String,Object&gt; <span class="title">getAll</span><span class="params">(<span class="meta">@RequestBody</span> Country country)</span></span>&#123;</span><br><span class="line">   Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">   List&lt;Country&gt; list = countryService.getAll(country);</span><br><span class="line">   map.put(<span class="string">&quot;code&quot;</span>,<span class="string">&quot;0&quot;</span>);</span><br><span class="line">   map.put(<span class="string">&quot;data&quot;</span>,<span class="keyword">new</span> PageInfo&lt;Country&gt;(list));</span><br><span class="line">   map.put(<span class="string">&quot;message&quot;</span>,<span class="string">&quot;成功&quot;</span>);</span><br><span class="line">   <span class="keyword">return</span> map;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意:使用通用 Mapper,<code>Application.java</code>中引入<code>@MapperScan</code>的时候要选择<code>@tk.mybatis.spring.annotation.MapperScan</code></p>
+<p>运行<code>Application.java</code> 打开浏览器在 <a target="_blank" rel="noopener" href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a> 页面进行测试.</p>
+<hr>
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/xiaokuicui/spring-boot-cloud-learning-examples/tree/master/spring-boot-mybatis">spring-boot-mybatis</a></li>
+</ul>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://www.mybatis.org/mybatis-3/zh/index.html">MyBatis官方中文参考文档</a></li>
+<li><a target="_blank" rel="noopener" href="http://mbg.cndocs.ml/">MyBatis-Generator官方中文文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/abel533">通过Mapper作者GitHub地址</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#spring boot" >
+    <span class="tag-code">spring boot</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/05/10/spring-boot/spring-boot-logger/">
+        <span class="nav-arrow">← </span>
+        
+          spring-boot 学习笔记 - 默认日志 logback 配置
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/07/22/spring-boot/spring-boot-actuator/">
+        
+          spring-boot 学习笔记 - actuator
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Mybatis-POM-%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">Mybatis POM 依赖</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">数据源配置</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SQL-%E8%84%9A%E6%9C%AC%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-nav-text">SQL 脚本初始化</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%9B%86%E6%88%90-MyBatis"><span class="toc-nav-text">集成 MyBatis</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80-%E9%80%9A%E8%BF%87%E6%B3%A8%E8%A7%A3%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">方案一 通过注解的方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AE%9E%E4%BD%93%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">实体对象</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Mapper%E7%9B%B8%E5%85%B3"><span class="toc-nav-text">Mapper相关</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Service%E7%9B%B8%E5%85%B3"><span class="toc-nav-text">Service相关</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Controller-%E7%9B%B8%E5%85%B3"><span class="toc-nav-text">Controller 相关</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C-%E9%80%9A%E8%BF%87XML%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">方案二 通过XML的方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3"><span class="toc-nav-text">配置相关</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Mapper%E7%9B%B8%E5%85%B3-1"><span class="toc-nav-text">Mapper相关</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Controller%E7%9B%B8%E5%85%B3"><span class="toc-nav-text">Controller相关</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%9B%86%E6%88%90%E9%80%9A%E7%94%A8-Mapper%E3%80%81%E5%88%86%E9%A1%B5%E6%8F%92%E4%BB%B6-PageHelper-%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">集成通用 Mapper、分页插件 PageHelper 依赖</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MyBatis-Generator-%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">MyBatis Generator 配置</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%80%9A%E7%94%A8-Mapper-%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">通用 Mapper 配置</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">示例代码</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-nav-text">参考文档</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2017/05/11/spring-boot/spring-boot-mybatis/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "xiaokuicui";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "spring-boot 学习笔记 - 集成MyBatis,分页插件PageHelper, 通用Mapper",
+        owner: "xiaokuicui",
+        repo: "xiaokuicui.github.io",
+        oauth: {
+          client_id: "8cfb250781885984f988",
+          client_secret: "6e97ff67546177ed763537725dce080eadae3062"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

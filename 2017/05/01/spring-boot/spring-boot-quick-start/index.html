@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="xiaokui&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      spring-boot 学习笔记 - 快速上手 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111867840-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-111867840-1');
+    </script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>spring-boot 学习笔记 - 快速上手</h2>
+  <p class="post-date">2017-05-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Spring Boot 简化了基于 Spring 应用的初始搭建及开发过程,其充分利用了 JavaConfig 的配置模式以及”约定优于配置”的理念,能够极大的简化基于 Spring MVC 的 Web 应用和 REST 服务开发。</p>
+<h3 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h3><ul>
+<li><p>通过<code>SPRING INITIALIZR</code>生成基本项目</p>
+<ul>
+<li>访问 <a target="_blank" rel="noopener" href="http://start.spring.io/">官方 SPRING INITIALIZR</a></li>
+<li>选择构建工具、spring boot 版本及一些工程基本信息,点击 “Switch to the full version.” 可选择 Java 版本.</li>
+<li>点击 Generate Project 下载项目压缩包。</li>
+</ul>
+</li>
+<li><p>解压压缩包,并用 IDEA 以 Maven 项目导入</p>
+</li>
+</ul>
+<h3 id="项目结构介绍"><a href="#项目结构介绍" class="headerlink" title="项目结构介绍"></a>项目结构介绍</h3><p>Spring Boot 建议的目录结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">com</span><br><span class="line">  +- example</span><br><span class="line">    +- myproject</span><br><span class="line">      +- Application.java</span><br><span class="line">      |</span><br><span class="line">      +- domain</span><br><span class="line">      |  +- Customer.java</span><br><span class="line">      |  +- CustomerRepository.java</span><br><span class="line">      |</span><br><span class="line">      +- service</span><br><span class="line">      |  +- CustomerService.java</span><br><span class="line">      |</span><br><span class="line">      +- web</span><br><span class="line">      |  +- CustomerController.java</span><br><span class="line">      |</span><br></pre></td></tr></table></figure>
+
+<p>root package 结构：<code>com.example.myproject</code></p>
+<ul>
+<li>Application.java 建议放到根目录下面,主要用于做一些框架配置</li>
+<li>domain 层主要用于实体（Entity）与数据访问层（Repository）</li>
+<li>service 层主要是业务类代码</li>
+<li>web 层负责页面访问控制</li>
+</ul>
+<h3 id="Maven-创建-Spring-Boot-项目的两种方式"><a href="#Maven-创建-Spring-Boot-项目的两种方式" class="headerlink" title="Maven 创建 Spring Boot 项目的两种方式"></a>Maven 创建 Spring Boot 项目的两种方式</h3><ul>
+<li><p>引入 spring-boot-starter-parent 父项目</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;<span class="number">2.0</span><span class="number">.0</span>.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/parent&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>spring-boot-starter-parent</code>是一个特殊的 starter,引入它之后,当前的项目就是 Spring Boot 项目了,它用来提供相关的 Maven 默认依赖,常用的包依赖可以省去 version 标签。关于 Spring Boot 提供了哪些 jar 包的依赖,可参考 <a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-boot/blob/v2.0.0.RELEASE/spring-boot-project/spring-boot-dependencies/pom.xml">spring-boot-dependencies.pom</a> 来获取整合的第三方框架及各框架版本。</p>
+<p>如果你不想使用某个依赖默认的版本，您还可以通过覆盖自己的项目中的属性来覆盖各个依赖项,例如要更换 Spring Data 版本系列，您可以将以下内容添加到<code>pom.xml</code>中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;spring-data-releasetrain.version&gt;Kay-SR4&lt;/spring-data-releasetrain.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>原本默认版本是 Kay-SR5 的,现在就使用 Kay-SR4 版本了.</p>
+</li>
+<li><p>使用自定义 Parent POM</p>
+<p>如果需要使用自己公司的 parent,可以通过使用<code>scope = import</code>依赖关系来保持依赖关系管理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencyManagement&gt;</span><br><span class="line">     &lt;dependencies&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;<span class="number">2.0</span><span class="number">.0</span>.RELEASE&lt;/version&gt;</span><br><span class="line">            &lt;type&gt;pom&lt;/type&gt;</span><br><span class="line">            &lt;scope&gt;<span class="keyword">import</span>&lt;/scope&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">    &lt;/dependencies&gt;</span><br><span class="line">&lt;/dependencyManagement&gt;</span><br></pre></td></tr></table></figure>
+
+<p>该设置不允许您使用如上所述的属性 (properties) 覆盖各个依赖项，要实现相同的结果，您需要在 <code>dependencyManagement</code> 标签中 <code>spring-boot-dependencies</code> 项之前添加一个配置,例如要更换 Spring Data 版本系列,您可以将以下内容添加到 <code>pom.xml</code> 中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencyManagement&gt;</span><br><span class="line">    &lt;dependencies&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-data-releasetrain&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;Kay-SR4&lt;/version&gt;</span><br><span class="line">            &lt;scope&gt;<span class="keyword">import</span>&lt;/scope&gt;</span><br><span class="line">            &lt;type&gt;pom&lt;/type&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;<span class="number">2.0</span><span class="number">.0</span>.RELEASE&lt;/version&gt;</span><br><span class="line">            &lt;type&gt;pom&lt;/type&gt;</span><br><span class="line">            &lt;scope&gt;<span class="keyword">import</span>&lt;/scope&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">    &lt;/dependencies&gt;</span><br><span class="line">&lt;/dependencyManagement&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="编写-HelloWorld-服务"><a href="#编写-HelloWorld-服务" class="headerlink" title="编写 HelloWorld 服务"></a>编写 HelloWorld 服务</h1><ul>
+<li><p>引入 spring-boot-starter-web 依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>编写 HelloWorldController 内容:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@RequestMapping(value = &quot;/hello&quot;, method = RequestMethod.GET)</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">helloWorld</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@RestController</code>注解相当于使用<code>@Responsebody、@Controller</code>两个组合.</li>
+</ul>
+</li>
+<li><p>启动 Application 主类运行应用程序,访问<a target="_blank" rel="noopener" href="http://localhost:8080/hello%E5%B0%B1%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E6%95%88%E6%9E%9C%E4%BA%86%E3%80%82">http://localhost:8080/hello就可以看到效果了。</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span> <span class="comment">// same as @Configuration @EnableAutoConfiguration @ComponentScan</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    SpringApplication.run(Application.class, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@SpringBootApplication</code>注解相当于使用<code>@Configuration @EnableAutoConfiguration @ComponentScan</code>三个组合。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Spring-Boot-Starter介绍"><a href="#Spring-Boot-Starter介绍" class="headerlink" title="Spring Boot Starter介绍"></a>Spring Boot Starter介绍</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>spring-boot-starter</td>
+<td>spring-boot 核心,包括自动配置支持,日志记录和YAML</td>
+</tr>
+<tr>
+<td>spring-boot-starter-activemq</td>
+<td>使用Apache ActiveMQ启动JMS消息传递</td>
+</tr>
+<tr>
+<td>spring-boot-starter-amqp</td>
+<td>使用Spring AMQP和Rabbit MQ</td>
+</tr>
+<tr>
+<td>spring-boot-starter-aop</td>
+<td>使用Spring AOP和AspectJ进行面向方面编程</td>
+</tr>
+<tr>
+<td>spring-boot-starter-artemis</td>
+<td>使用Apache Artemis启动JMS消息传递</td>
+</tr>
+<tr>
+<td>spring-boot-starter-batch</td>
+<td>使用Spring Batch</td>
+</tr>
+<tr>
+<td>spring-boot-starter-cache</td>
+<td>Spring Framework的缓存支持</td>
+</tr>
+<tr>
+<td>spring-boot-starter-cloud-connectors</td>
+<td>Starter使用Spring Cloud Connectors，可简化Cloud Foundry和Heroku等云平台中的服务连接</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-cassandra</td>
+<td>使用Cassandra分布式数据库和Spring Data Cassandra</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-cassandra-reactive</td>
+<td>使用Cassandra分布式数据库和Spring Data Cassandra Reactive</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-couchbase</td>
+<td>使用Couchbase面向文档的数据库和Spring Data Couchbase</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-couchbase-reactive</td>
+<td>使用Couchbase面向文档的数据库和Spring Data Couchbase Reactive</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-elasticsearch</td>
+<td>使用Elasticsearch搜索和分析引擎和Spring Data Elasticsearch</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-jpa</td>
+<td>使用Spring数据JPA和Hibernate</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-ldap</td>
+<td>使用Spring Data LDAP</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-mongodb</td>
+<td>使用MongoDB面向文档的数据库和Spring Data MongoDB Reactive</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-neo4j</td>
+<td>使用Neo4j图形数据库和Spring Data Neo4j</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-redis</td>
+<td>使用Spring Data Redis和Lettuce客户端使用Redis键值数据存储</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-redis-reactive</td>
+<td>使用Redis键值数据存储以及Spring Data Redis反应器和Lettuce客户端</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-rest</td>
+<td>使用Spring Data REST通过REST公开Spring Data存储库</td>
+</tr>
+<tr>
+<td>spring-boot-starter-data-solr</td>
+<td>启动Spring Data Solr使用Apache Solr搜索平台</td>
+</tr>
+<tr>
+<td>spring-boot-starter-freemarker</td>
+<td>使用FreeMarker视图构建MVC Web应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-groovy-templates</td>
+<td>使用Groovy模板视图构建MVC Web应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-hateoas</td>
+<td>使用Spring MVC和Spring HATEOAS构建基于超媒体的RESTful Web应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-integration</td>
+<td>使用Spring Integration</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jdbc</td>
+<td>将JDBC与Tomcat JDBC连接池配合使用</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jersey</td>
+<td>使用JAX-RS和Jersey构建RESTful Web应用程序。替代方案spring-boot-starter-web</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jooq</td>
+<td>使用jOOQ访问SQL数据库。替代spring-boot-starter-data-jpa或spring-boot-starter-jdbc</td>
+</tr>
+<tr>
+<td>spring-boot-starter-json</td>
+<td>用于阅读和编写json</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jta-atomikos</td>
+<td>使用Atomikos启动JTA</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jta-bitronix</td>
+<td>使用Bitronix启动JTA</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jta-narayana</td>
+<td>启动Narayana JTA</td>
+</tr>
+<tr>
+<td>spring-boot-starter-mail</td>
+<td>使用Java Mail和Spring Framework的电子邮件发送</td>
+</tr>
+<tr>
+<td>spring-boot-starter-mustache</td>
+<td>使用Mustache视图构建Web应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-quartz</td>
+<td>使用quartz定时任务</td>
+</tr>
+<tr>
+<td>spring-boot-starter-security</td>
+<td>使用Spring Security</td>
+</tr>
+<tr>
+<td>spring-boot-starter-test</td>
+<td>用于测试包含JUnit，Hamcrest和Mockito等库的Spring Boot应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-thymeleaf</td>
+<td>使用Thymeleaf视图构建MVC Web应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-validation</td>
+<td>通过Hibernate Validator使用Java Bean验证</td>
+</tr>
+<tr>
+<td>spring-boot-starter-web</td>
+<td>使用Spring MVC构建Web，包括RESTful应用程序。默认使用Tomcat嵌入式容器</td>
+</tr>
+<tr>
+<td>spring-boot-starter-web-services</td>
+<td>使用Spring Web Services</td>
+</tr>
+<tr>
+<td>spring-boot-starter-webflux</td>
+<td>使用Spring Framework的Reactive Web构建WebFlux应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-websocket</td>
+<td>使用Spring Framework的WebSocket构建WebSocket应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-actuator</td>
+<td>监控和管理Spring Boot应用程序</td>
+</tr>
+<tr>
+<td>spring-boot-starter-jetty</td>
+<td>使用Jetty作为嵌入式servlet容器.替代方案spring-boot-starter-tomcat</td>
+</tr>
+<tr>
+<td>spring-boot-starter-log4j2</td>
+<td>使用Log4j2进行日志记录。替代方案spring-boot-starter-logging</td>
+</tr>
+<tr>
+<td>spring-boot-starter-logging</td>
+<td>使用Logback进行日志记录。默认日志启动器</td>
+</tr>
+<tr>
+<td>spring-boot-starter-reactor-netty</td>
+<td>使用Reactor Netty作为嵌入式反应式HTTP服务器</td>
+</tr>
+<tr>
+<td>spring-boot-starter-tomcat</td>
+<td>使用Tomcat作为嵌入式servlet容器.默认使用的servlet容器启动器spring-boot-starter-web</td>
+</tr>
+<tr>
+<td>spring-boot-starter-undertow</td>
+<td>使用Undertow作为嵌入式servlet容器.替代方案spring-boot-starter-tomcat</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/xiaokuicui/spring-boot-cloud-learning-examples/tree/master/spring-boot-quick-start">spring-boot-quick-start</a></li>
+</ul>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/2.0.1.RELEASE/reference/htmlsingle/#getting-started">spring-boot-getting-started</a></li>
+<li><a target="_blank" rel="noopener" href="http://noahsnail.com/2016/10/08/2016-10-8-Spring%20Boot%202.0.0%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C_%E4%B8%AD%E6%96%87%E7%89%88/">官方参考中文文档</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#spring boot" >
+    <span class="tag-code">spring boot</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+    
+      <a class="nav-right" href="/2017/05/02/spring-boot/spring-boot-profiles/">
+        
+          spring-boot 学习笔记 - Profiles 配置
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-nav-text">快速上手</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">项目结构介绍</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Maven-%E5%88%9B%E5%BB%BA-Spring-Boot-%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">Maven 创建 Spring Boot 项目的两种方式</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E7%BC%96%E5%86%99-HelloWorld-%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">编写 HelloWorld 服务</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Spring-Boot-Starter%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">Spring Boot Starter介绍</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">示例代码</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-nav-text">参考链接</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2017/05/01/spring-boot/spring-boot-quick-start/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "xiaokuicui";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "spring-boot 学习笔记 - 快速上手",
+        owner: "xiaokuicui",
+        repo: "xiaokuicui.github.io",
+        oauth: {
+          client_id: "8cfb250781885984f988",
+          client_secret: "6e97ff67546177ed763537725dce080eadae3062"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

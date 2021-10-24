@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="xiaokui&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      spring-boot 学习笔记 - 使用 Swagger2 构建 RESTful API | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111867840-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-111867840-1');
+    </script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>spring-boot 学习笔记 - 使用 Swagger2 构建 RESTful API</h2>
+  <p class="post-date">2017-05-03</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Swagger2 是一个开源软件框架,可帮助开发人员设计、构建、记录和使用 RESTful Web 服务。</p>
+<p>Swagger2 与语言无关，可扩展到超越 HTTP 的新技术和协议。定义了一组 HTML，JavaScript 和 CSS 资源，以便从符合 Swagger 的 API 动态生成文档。Swagger UI 项目将这些文件捆绑在一起，以在浏览器上显示 API。除了渲染文档外，Swagger UI 还允许其他 API 开发人员或消费者与 API 资源进行交互，而无需实施任何实现逻辑。</p>
+<p>Swagger2 规范（称为 OpenAPI 规范）有几个实现。目前，取代 Swagger-SpringMVC（Swagger 1.2及更早版本）的 Springfox 在应用程序中很受欢迎。Springfox 支持Swagger 1.2和2.0。</p>
+<h1 id="POM-依赖"><a href="#POM-依赖" class="headerlink" title="POM 依赖"></a>POM 依赖</h1><p>在 Spring Boot Web 项目之上添加 Swagger 依赖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.springfox&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;<span class="number">2.8</span><span class="number">.0</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;io.springfox&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;springfox-swagger-ui&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;<span class="number">2.8</span><span class="number">.0</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="创建-SwaggerConfig-配置类"><a href="#创建-SwaggerConfig-配置类" class="headerlink" title="创建 SwaggerConfig 配置类"></a>创建 SwaggerConfig 配置类</h1><p>在 <code>Application.java</code> 同级目录创建 <code>SwaggerConfig.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger2</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">testApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .select()</span><br><span class="line">                .apis(RequestHandlerSelectors.basePackage(<span class="string">&quot;org.xiaokui.springboot.swagger.web&quot;</span>))</span><br><span class="line">                .paths(PathSelectors.ant(<span class="string">&quot;/users/**&quot;</span>))</span><br><span class="line">                .build()</span><br><span class="line">                .apiInfo(apiInfo());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">                .title(<span class="string">&quot;Spring Boot REST API&quot;</span>)</span><br><span class="line">                .description(<span class="string">&quot;测试 REST API&quot;</span>)</span><br><span class="line">                .version(<span class="string">&quot;1.0&quot;</span>)</span><br><span class="line">                .termsOfServiceUrl(<span class="string">&quot;Terms of service&quot;</span>)</span><br><span class="line">                .contact(<span class="keyword">new</span> Contact(<span class="string">&quot;xiaokui&quot;</span>,<span class="string">&quot;http://www.xiaokui.org&quot;</span>,<span class="string">&quot;xiaokui.cui@gmail.com&quot;</span>))</span><br><span class="line">                .license(<span class="string">&quot;Apache License Version 2.0&quot;</span>)</span><br><span class="line">                .licenseUrl(<span class="string">&quot;https://www.apache.org/licenses/LICENSE-2.0&quot;</span>)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>@Configuration</code> 注解,让 Spring 来加载该类配置。再通过<code>@EnableSwagger2</code>注解来启用 Swagger2。</p>
+<ol>
+<li><code>Docket</code> 用来初始化为 Swagger 规范2.0.</li>
+<li><code>select()</code> 函数返回一个 <code>ApiSelectorBuilder</code> 实例对通过 Swagger2 公开的端点进行精细控制.</li>
+<li><code>apis()</code> 使用 RequestHandlerSelectors 过滤API,可以使用<code>any()</code>、<code>none()</code>、<code>withClassAnnotation(类注解)</code>、<code>withMethodAnnotation(方法注解)</code>、<code>basePackage(包路径)</code>等方法. 这里使用的是 <code>basePackage(&quot;org.xiaokui.springboot.swagger.web&quot;)</code>. Swagger 会扫描指定包下所有的 Controller ,除了被 <code>@ApiIgnore</code> 注解标注的接口。</li>
+<li><code>paths()</code> 使用 PathSelectors 过滤应用程序的请求路径,可以使用<code>regex()</code>、<code>ant()</code>、<code>any()</code>、<code>none()</code>等方法. 这里使用的是<code>any(&quot;/users/**&quot;)</code>.Swagger 会扫描指定包下请求路径以<code>/users</code>开头的 Controller.</li>
+</ol>
+<h1 id="添加接口注解"><a href="#添加接口注解" class="headerlink" title="添加接口注解"></a>添加接口注解</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/users&quot;)</span></span><br><span class="line"><span class="meta">@Api(value = &quot;/users&quot;,description = &quot;用户管理&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">private</span> List&lt;User&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">   <span class="meta">@ApiOperation(value = &quot;用户列表&quot;,response = List.class)</span></span><br><span class="line">   <span class="meta">@ApiResponses(value = &#123;</span></span><br><span class="line"><span class="meta">           @ApiResponse(code = 200, message = &quot;成功&quot;),</span></span><br><span class="line"><span class="meta">           @ApiResponse(code = 404, message = &quot;找不到&quot;)</span></span><br><span class="line"><span class="meta">    &#125;</span></span><br><span class="line"><span class="meta">   )</span></span><br><span class="line">   <span class="meta">@RequestMapping(value = &quot;/list&quot;, method= RequestMethod.GET, produces = &quot;application/json&quot;)</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">list</span><span class="params">()</span></span>&#123;</span><br><span class="line">       list.add(<span class="keyword">new</span> User(<span class="number">1L</span>,<span class="string">&quot;test1&quot;</span>,<span class="string">&quot;test1&quot;</span>));</span><br><span class="line">       list.add(<span class="keyword">new</span> User(<span class="number">2L</span>,<span class="string">&quot;test2&quot;</span>,<span class="string">&quot;test2&quot;</span>));</span><br><span class="line">       <span class="keyword">return</span> list;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@ApiOperation(value = &quot;根据id查找用户&quot;,response = User.class)</span></span><br><span class="line">   <span class="meta">@ApiImplicitParam(name = &quot;ID&quot;,value = &quot;用户ID&quot;,required = true)</span></span><br><span class="line">   <span class="meta">@RequestMapping(value = &quot;/show/&#123;id&#125;&quot;, method= RequestMethod.GET, produces = &quot;application/json&quot;)</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> User <span class="title">showUser</span><span class="params">(<span class="meta">@PathVariable</span> Integer id)</span></span>&#123;</span><br><span class="line">       User user = list.get(id);</span><br><span class="line">       <span class="keyword">return</span> user;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@ApiOperation(value = &quot;添加用户&quot;)</span></span><br><span class="line">   <span class="meta">@ApiImplicitParam(name = &quot;user&quot;,value = &quot;用户实体&quot;,required = true,dataType = &quot;user&quot;)</span></span><br><span class="line">   <span class="meta">@RequestMapping(value = &quot;/add&quot;, method = RequestMethod.POST, produces = &quot;application/json&quot;)</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">saveProduct</span><span class="params">(<span class="meta">@RequestBody</span> User user)</span></span>&#123;</span><br><span class="line">       user.setId(<span class="number">3L</span>);</span><br><span class="line">       user.setUserName(<span class="string">&quot;test3&quot;</span>);</span><br><span class="line">       user.setPassword(<span class="string">&quot;test3&quot;</span>);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">&quot;保存成功&quot;</span>, HttpStatus.OK);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@ApiOperation(value = &quot;更新用户&quot;)</span></span><br><span class="line">   <span class="meta">@ApiImplicitParams(&#123;</span></span><br><span class="line"><span class="meta">           @ApiImplicitParam(name = &quot;id&quot;,value = &quot;用户ID&quot;,required = true),</span></span><br><span class="line"><span class="meta">           @ApiImplicitParam(name = &quot;user&quot;,value = &quot;用户实体&quot;,required = true,dataType = &quot;user&quot;)</span></span><br><span class="line"><span class="meta">   &#125;)</span></span><br><span class="line">   <span class="meta">@RequestMapping(value = &quot;/update/&#123;id&#125;&quot;, method = RequestMethod.PUT, produces = &quot;application/json&quot;)</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">updateProduct</span><span class="params">(<span class="meta">@PathVariable</span> Integer id, <span class="meta">@RequestBody</span> User user)</span></span>&#123;</span><br><span class="line">       User user1 = list.get(id);</span><br><span class="line">       user1.setUserName(user.getUserName());</span><br><span class="line">       user1.setPassword(user.getPassword());</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">&quot;更新成功&quot;</span>, HttpStatus.OK);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@ApiOperation(value = &quot;删除用户&quot;)</span></span><br><span class="line">   <span class="meta">@ApiImplicitParam(name = &quot;id&quot;,value = &quot;用户id&quot;,required = true)</span></span><br><span class="line">   <span class="meta">@RequestMapping(value=&quot;/delete/&#123;id&#125;&quot;, method = RequestMethod.DELETE, produces = &quot;application/json&quot;)</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">delete</span><span class="params">(<span class="meta">@PathVariable</span> Integer id)</span></span>&#123;</span><br><span class="line">       list.remove(id);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">&quot;删除成功&quot;</span>, HttpStatus.OK);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>@Api</code> 标注在接口类上,描述接口的作用.</li>
+<li><code>@ApiOperation</code> 标记在接口方法上,对一个HTTP请求或方法进行描述.</li>
+<li><code>@ApiImplicitParam</code> 对API的单一参数进行注解。其属性<code>dataType</code>对应<code>@ApiModel</code>的<code>value</code>值.</li>
+<li><code>@ApiImplicitParams</code> 是<code>@ApiImplicitParam</code>的容器类,以数组方式存储.</li>
+<li><code>@ApiResponse</code> 对响应方式进行描述.</li>
+<li><code>@ApiResponses</code> 是<code>@ApiResponse</code>的容器类,以数组方式存储.</li>
+<li><code>@ApiModel</code> 标记在实体类上,描述其含义</li>
+<li><code>@ApiModelProperty</code> 标记在实体类属性上,描述其含义.</li>
+</ul>
+<p>启动Spring Boot程序，访问：<a target="_blank" rel="noopener" href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a> 就能看到 Swagger 生成的 REST API 页面了. <img src="https://raw.githubusercontent.com/xiaokuicui/xiaokuicui.github.io/master/assets/images/swagger.jpg"></p>
+<p>展开其中一个接口,点击<code>Try it out</code>可以进行测试.</p>
+<hr>
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/xiaokuicui/spring-boot-cloud-learning-examples/tree/master/spring-boot-swagger">spring-boot-swagger</a></li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://springfox.github.io/springfox/docs/current/">Springfox 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api">Setting Up Swagger 2 with a Spring REST API</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#spring boot" >
+    <span class="tag-code">spring boot</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/05/03/spring-boot/spring-boot-thymeleaf/">
+        <span class="nav-arrow">← </span>
+        
+          spring-boot 学习笔记 - 集成 Thymeleaf
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/05/03/spring-boot/spring-boot-live-reload/">
+        
+          spring-boot 学习笔记 - 实现热加载和远程调试
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#POM-%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">POM 依赖</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%88%9B%E5%BB%BA-SwaggerConfig-%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-nav-text">创建 SwaggerConfig 配置类</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%8E%A5%E5%8F%A3%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">添加接口注解</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">示例代码</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-nav-text">参考链接</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2017/05/03/spring-boot/spring-boot-swagger/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "xiaokuicui";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "spring-boot 学习笔记 - 使用 Swagger2 构建 RESTful API",
+        owner: "xiaokuicui",
+        repo: "xiaokuicui.github.io",
+        oauth: {
+          client_id: "8cfb250781885984f988",
+          client_secret: "6e97ff67546177ed763537725dce080eadae3062"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

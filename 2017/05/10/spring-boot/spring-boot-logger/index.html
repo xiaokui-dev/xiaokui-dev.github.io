@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="xiaokui&#39;s blog">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      spring-boot 学习笔记 - 默认日志 logback 配置 | Hexo
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111867840-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-111867840-1');
+    </script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>Hexo</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>spring-boot 学习笔记 - 默认日志 logback 配置</h2>
+  <p class="post-date">2017-05-10</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><a target="_blank" rel="noopener" href="https://www.slf4j.org/">SLF4J</a>是一个针对于各类Java日志框架的统一<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Facade_pattern">Facade</a>抽象.Java日志框架众多—-常用的有<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api//java/util/logging/package-summary.html">Java Util Logging</a>、 <a target="_blank" rel="noopener" href="https://logging.apache.org/log4j/2.x/">Log4J2</a>、 <a target="_blank" rel="noopener" href="https://logback.qos.ch/">Logback</a>、<a target="_blank" rel="noopener" href="https://commons.apache.org/proper/commons-logging/">Commons Logging</a>, Spring 框架使用的是 Jakarta Commons Logging API (JCL)。而 SLF4J 定义了统一的日志抽象接口，真正的日志实现则是在运行时决定的—-它提供了各类日志框架的binding。</p>
+<h1 id="默认的日志框架-logback"><a href="#默认的日志框架-logback" class="headerlink" title="默认的日志框架 logback"></a>默认的日志框架 logback</h1><p>Spring Boot 采用 Commons Logging 作为内部的日志框架,对于日志的具体实现,则没有限制.默认提供了对 Java Util Logging、Log4J2和 Logback 的支持。每种情况下都预先配置使用控制台作为输出，也可以使用可选的文件输出。</p>
+<p>默认情况下，如果你使用<code>Starters</code>,则使用 Logback 进行日志记录. Logback 路由能保证依赖库使用 Java Util Logging,Commons Logging，Log4J或SLF4J都能正确工作。也就是说，现在你的项目日志工作统一交由 Logback 来做，即使依赖库使用了其他的日志，没有关系，私下都会”转交”Logback，按照Logback配置的输出方式，统一记录和输出.</p>
+<p>引入<code>spring-boot-starter-logging</code>依赖:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h2><p>日志级别从低到高分为<code>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</code>，如果设置为<code>WARN</code>，则低于<code>WARN</code>的信息都不会输出。</p>
+<p>默认的日志配置会将信息输出到控制台。默认情况下会输出<code>ERROR</code>，<code>WARN</code>和<code>INFO</code>级别的信息。你也可以通过在配置文件<code>application.properties</code> 中配置<code>debug=true</code> 来开启更多的日志输出功能。此模式只能输出被选择的核心logger 来输出更多的消息，例如内嵌的容器，Hibernate 和spring Boot。我们自己的应用并不会输出<code>Debug</code>级别的日志。</p>
+<h2 id="文件输出"><a href="#文件输出" class="headerlink" title="文件输出"></a>文件输出</h2><p>默认情况下，Spring Boot 将日志输出到控制台,不会记录到日志文件。如果要编写除控制台输出之外的日志文件，则需在<code>application.properties</code>中设置<code>logging.file</code>或<code>logging.path</code>属性。</p>
+<ul>
+<li>logging.file，设置文件，可以是绝对路径，也可以是相对路径。如：logging.file=my.log</li>
+<li>logging.path，设置目录，会在该目录下创建spring.log文件，并写入日志内容，如：logging.path=/var/log</li>
+</ul>
+<p>如果只配置 <code>logging.file</code>，会在项目的当前路径下生成一个 <code>xxx.log</code> 日志文件。</p>
+<p>如果只配置 <code>logging.path</code>,在 <code>/var/log</code>文件夹生成一个日志文件为 <code>spring.log</code></p>
+<blockquote>
+<p>注：二者不能同时使用，如若同时使用，则只有logging.file生效</p>
+</blockquote>
+<p><em>默认情况下，日志文件的大小达到10MB时会切分一次，产生新的日志文件，默认级别为：ERROR、WARN、INFO</em></p>
+<h2 id="自定义日志配置"><a href="#自定义日志配置" class="headerlink" title="自定义日志配置"></a>自定义日志配置</h2><p>通过将不同的日志依赖包添加到classpath 中，Spring Boot 的日志系统能够判断激活不同的日志实现方式。更进一步的配置是将自定义的日志配置文件添加到<code>classpath</code> 中.</p>
+<p>由于日志的初始化早于<code>ApplicationContext</code> 的创建，因此不能够通过<code>@Configuration</code>文件来进行配置。只能通过系统变量或者外部的传统配置文件来进行配置.</p>
+<p>根据不同的日志系统，你可以按如下规则组织配置文件名并放置在<code>src/main/resources</code>路径下,就能被正确加载:</p>
+<table>
+<thead>
+<tr>
+<th>日志系统</th>
+<th>文件名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>logback</td>
+<td><code>logback-spring.xml</code>, <code>logback-spring.groovy</code>, <code>logback.xml</code>, <code>logback.groovy</code></td>
+</tr>
+<tr>
+<td>log4j2</td>
+<td><code>log4j2-spring.xml</code>, <code>log4j2.xml</code></td>
+</tr>
+<tr>
+<td>JDK(Java Util Logging)</td>
+<td><code>logging.properties</code></td>
+</tr>
+</tbody></table>
+<p><em>Spring Boot官方推荐优先使用带有-spring的文件名作为你的日志配置（如使用logback-spring.xml，而不是logback.xml）</em></p>
+<h3 id="logback-spring-xml-配置文件"><a href="#logback-spring-xml-配置文件" class="headerlink" title="logback-spring.xml 配置文件"></a>logback-spring.xml 配置文件</h3><h4 id="1-根节点-lt-configuration-gt"><a href="#1-根节点-lt-configuration-gt" class="headerlink" title="1. 根节点&lt;configuration&gt;"></a>1. 根节点<code>&lt;configuration&gt;</code></h4><p>包含三个属性:</p>
+<ul>
+<li><p>scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。</p>
+</li>
+<li><p>scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟.</p>
+</li>
+<li><p>debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false.</p>
+<p>例如:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">&quot;true&quot;</span> <span class="attr">scanPeriod</span>=<span class="string">&quot;60 seconds&quot;</span> <span class="attr">debug</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--其他配置省略--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-子节点-lt-contextName-gt"><a href="#2-子节点-lt-contextName-gt" class="headerlink" title="2. 子节点&lt;contextName&gt;:"></a>2. 子节点<code>&lt;contextName&gt;</code>:</h4><p>用来设置上下文名称，每个logger都关联到logger上下文,默认上下文名称为default。但可以使用<code>&lt;contextName&gt;</code>设置成其他名字,用于区分不同应用程序的记录。一旦设置,不能修改。</p>
+<p>例如:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">&quot;true&quot;</span> <span class="attr">scanPeriod</span>=<span class="string">&quot;60 seconds&quot;</span> <span class="attr">debug</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">contextName</span>&gt;</span>myAppName<span class="tag">&lt;/<span class="name">contextName</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--其他配置省略--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-子节点-lt-property-gt"><a href="#3-子节点-lt-property-gt" class="headerlink" title="3. 子节点&lt;property&gt;:"></a>3. 子节点<code>&lt;property&gt;</code>:</h4><p>用来定义变量值，它有两个属性name和value，通过</p>
+<p><property>定义的值会被插入到logger上下文中，可以使”${}”来使用变量。</property></p>
+<ul>
+<li><p>name: 变量的名称</p>
+</li>
+<li><p>value: 变量定义的值</p>
+<p>例如:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">&quot;true&quot;</span> <span class="attr">scanPeriod</span>=<span class="string">&quot;60 seconds&quot;</span> <span class="attr">debug</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">　   <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;APP_Name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;myAppName&quot;</span> /&gt;</span></span><br><span class="line">　   <span class="tag">&lt;<span class="name">contextName</span>&gt;</span>$&#123;APP_Name&#125;<span class="tag">&lt;/<span class="name">contextName</span>&gt;</span></span><br><span class="line">　　 <span class="comment">&lt;!--其他配置省略--&gt;</span></span><br><span class="line">　<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="4-子节点-lt-timestamp-gt"><a href="#4-子节点-lt-timestamp-gt" class="headerlink" title="4. 子节点&lt;timestamp&gt;:"></a>4. 子节点<code>&lt;timestamp&gt;</code>:</h4><p>获取时间戳字符串,他有两个属性key和datePattern.</p>
+<ul>
+<li><p>key:标识此</p>
+<p><timestamp> 的名字</timestamp></p>
+</li>
+<li><p>datePattern:设置将当前时间（解析配置文件的时间）转换为字符串的模式,遵循<code>java.txt.SimpleDateFormat</code>的格式</p>
+<p>例如:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">&quot;true&quot;</span> <span class="attr">scanPeriod</span>=<span class="string">&quot;60 seconds&quot;</span> <span class="attr">debug</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">　   <span class="tag">&lt;<span class="name">timestamp</span> <span class="attr">key</span>=<span class="string">&quot;bySecond&quot;</span> <span class="attr">datePattern</span>=<span class="string">&quot;yyyyMMdd&quot;</span>/&gt;</span></span><br><span class="line">　   <span class="tag">&lt;<span class="name">contextName</span>&gt;</span>$&#123;bySecond&#125;<span class="tag">&lt;/<span class="name">contextName</span>&gt;</span></span><br><span class="line">　　 <span class="comment">&lt;!--其他配置省略--&gt;</span></span><br><span class="line">　<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="5-子节点-lt-appender-gt"><a href="#5-子节点-lt-appender-gt" class="headerlink" title="5. 子节点&lt;appender&gt;:"></a>5. 子节点<code>&lt;appender&gt;</code>:</h4><p>负责写日志的组件,它有两个必要属性name和class。name指定appender名称，class指定appender的全限定名.</p>
+<ul>
+<li><p>ConsoleAppender:把日志添加到控制台，有以下子节点：</p>
+<ul>
+<li><code>&lt;encoder&gt;</code>：对日志进行格式化。</li>
+<li><code>&lt;target&gt;</code>:字符串 System.out(默认)或者 System.err.</li>
+</ul>
+<p>例如:</p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;Console&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">target</span>&gt;</span>System.err<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%-4relative [%thread] %-5level %logger&#123;35&#125; - %msg %n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;Console&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>FileAppender:把日志添加到文件，有以下子节点：</p>
+<ul>
+<li><code>&lt;file&gt;</code>：被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。</li>
+<li><code>&lt;append&gt;</code>：如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。</li>
+<li><code>&lt;encoder&gt;</code>：对记录事件进行格式化。</li>
+<li><code>&lt;prudent&gt;</code>：如果是 true，日志会被安全的写入文件，即使其他的FileAppender也在向此文件做写入操作，效率低，默认是 false。</li>
+</ul>
+<p>例如:</p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;fileAppender&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.FileAppender&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">file</span>&gt;</span>testFile.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">append</span>&gt;</span>true<span class="tag">&lt;/<span class="name">append</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%-4relative [%thread] %-5level %logger&#123;35&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;fileAppender&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>RollingFileAppender: 滚动记录文件,先将日志记录到指定文件，当符合某个条件时,将日志记录到其他文件。有以下子节点：</p>
+<ul>
+<li><p><code>&lt;file&gt;</code>：被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。</p>
+</li>
+<li><p><code>&lt;append&gt;</code>：如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。</p>
+</li>
+<li><p><code>&lt;encoder&gt;</code>：对记录事件进行格式化。</p>
+</li>
+<li><p><code>&lt;prudent&gt;</code>：当为true时，不支持FixedWindowRollingPolicy。支持TimeBasedRollingPolicy，但是有两个限制，1不支持也不允许文件压缩，2不能设置file属性，必须留空。</p>
+</li>
+<li><p><code>&lt;rollingPolicy&gt;</code>:当发生滚动时，决定 RollingFileAppender 的行为，涉及文件移动和重命名.</p>
+<ul>
+<li><p>TimeBasedRollingPolicy:最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责出发滚动。有以下子节点：</p>
+<ul>
+<li><p><code>&lt;fileNamePattern&gt;</code>:必要节点，包含文件名及”%d”转换符， “%d”可以包含一个Java.text.SimpleDateFormat指定的时间格式，如：%d{yyyy-MM}。如果直接使用 %d，默认格式是 yyyy-MM-dd。RollingFileAppender 的file字节点可有可无，通过设置file，可以为活动文件和归档文件指定不同位置，当前日志总是记录到file指定的文件（活动文件），活动文件的名字不会改变；如果没设置file，活动文件的名字会根据fileNamePattern 的值，每隔一段时间改变一次。”/“或者”&quot;会被当做目录分隔符。</p>
+</li>
+<li><p><code>&lt;maxHistory&gt;</code>:可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件。假设设置每个月滚动，且</p>
+<p><maxhistory>是6，则只保存最近6个月的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除。</maxhistory></p>
+</li>
+</ul>
+</li>
+<li><p>FixedWindowRollingPolicy:根据固定窗口算法重命名文件的滚动策略。有以下子节点：</p>
+<ul>
+<li><code>&lt;minIndex&gt;</code>:窗口索引最小值</li>
+<li><code>&lt;maxIndex&gt;</code>:窗口索引最大值，当用户指定的窗口过大时，会自动将窗口设置为12。</li>
+<li><code>&lt;fileNamePattern&gt;</code>:必须包含”%i”例如，假设最小值和最大值分别为1和2，命名模式为 mylog%i.log,会产生归档文件mylog1.log和mylog2.log。还可以指定文件压缩选项，例如，mylog%i.log.gz 或者 没有log%i.log.zip</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>&lt;triggeringPolicy&gt;</code>: 告知 RollingFileAppender 合适激活滚动.</p>
+<ul>
+<li><p>SizeBasedTriggeringPolicy查看当前活动文件的大小，如果超过指定大小会告知RollingFileAppender 触发当前活动文件滚动。只有一个节点:</p>
+<ul>
+<li><code>&lt;maxFileSize&gt;</code>:这是活动文件的大小，默认值是10MB。</li>
+</ul>
+</li>
+</ul>
+<p>例如：每天生成一个日志文件，保存30天的日志文件。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;fileAppender&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.FileAppender&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%-4relative [%thread] %-5level %logger&#123;35&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>logFile.%d&#123;yyyy-MM-dd&#125;.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>30<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;fileAppender&quot;</span> /&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>例如：按照固定窗口模式生成日志文件，当文件大于20MB时，生成新的日志文件。窗口大小是1到3，当保存了3个归档文件后，将覆盖最早的日志。</p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;fileAppender&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.FileAppender&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">file</span>&gt;</span>test.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>tests.%i.log.zip<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">minIndex</span>&gt;</span>1<span class="tag">&lt;/<span class="name">minIndex</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">maxIndex</span>&gt;</span>3<span class="tag">&lt;/<span class="name">maxIndex</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">triggeringPolicy</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">maxFileSize</span>&gt;</span>5MB<span class="tag">&lt;/<span class="name">maxFileSize</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">triggeringPolicy</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%-4relative [%thread] %-5level %logger&#123;35&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;fileAppender&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>其他Appender:还有SocketAppender、SMTPAppender、DBAppender(记录日志到数据库)、SyslogAppender、SiftingAppender具体配置可参考<a target="_blank" rel="noopener" href="https://logback.qos.ch/documentation.html">官方文档</a></p>
+</li>
+</ul>
+<h4 id="6-子节点-lt-logger-gt"><a href="#6-子节点-lt-logger-gt" class="headerlink" title="6. 子节点&lt;logger&gt;:"></a>6. 子节点<code>&lt;logger&gt;</code>:</h4><p>用来设置某一个包或具体的某一个类的日志打印级别、以及指定<code>&lt;appender&gt;</code>。有一个name属性，一个可选的level和一个可选的addtivity属性。可以包含零个或多个<code>&lt;appender-ref&gt;</code>元素，标识这个appender将会添加到这个loger.</p>
+<ul>
+<li>name:用来指定受此loger约束的某一个包或者具体的某一个类。</li>
+<li>level 用来设置打印级别（日志级别),大小写无关：TRACE, DEBUG, INFO, WARN, ERROR,还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。如果未设置此属性，那么当前loger将会继承上级的级别。</li>
+<li>addtivity:是否向上级loger传递打印信息。默认是true</li>
+</ul>
+<h4 id="7-子节点-lt-root-gt"><a href="#7-子节点-lt-root-gt" class="headerlink" title="7. 子节点&lt;root&gt;:"></a>7. 子节点<code>&lt;root&gt;</code>:</h4><p>也是<code>&lt;loger&gt;</code>元素,但它是根<code>loger</code>,是所有<code>&lt;loger&gt;</code>的上级.只有一个level属性，因为name已经被命名为<code>root</code>,且已经是最上级了。</p>
+<ul>
+<li><p>level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR,不能设置为INHERITED或者同义词NULL。默认是DEBUG。 <code>&lt;root&gt;</code>可以包含零个或多个</p>
+<p><appender-ref>元素，标识这个appender将会添加到这个loger。</appender-ref></p>
+</li>
+</ul>
+<p><strong>举例说明</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.xiaokui.springboot.jpa;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootJpaApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger logger = LoggerFactory.getLogger(SpringBootJpaApplication.class);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(SpringBootJpaApplication.class, args);</span><br><span class="line">        logger.trace(<span class="string">&quot;打印TRACE信息&quot;</span>);</span><br><span class="line">        logger.debug(<span class="string">&quot;打印DEBUG信息&quot;</span>);</span><br><span class="line">        logger.info(<span class="string">&quot;打印INFO信息&quot;</span>);</span><br><span class="line">        logger.warn(<span class="string">&quot;打印WARN信息&quot;</span>);</span><br><span class="line">        logger.error(<span class="string">&quot;打印ERROR信息&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>只配置root</li>
+</ol>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;Console&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;HH:mm:ss.SSS&#125; [%thread]  %-5level %logger&#123;36&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;Console&quot;</span> /&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><root level="INFO">将root的打印级别设置为”INFO”，指定了名字为”Console”的appender。</root></p>
+</li>
+<li><p>运行<code>SpringBootJpaApplication</code>,root将级别为”INFO”及大于”INFO”的日志信息交给已经配置好的名为”Console”的appender处理,”Console”appender将信息打印到控制台；</p>
+<p>打印结果如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">13</span>:<span class="number">35</span>:<span class="number">48.910</span> [main]  INFO  o.x.s.jpa.SpringBootJpaApplication - 打印INFO信息</span><br><span class="line"><span class="number">13</span>:<span class="number">35</span>:<span class="number">48.910</span> [main]  WARN  o.x.s.jpa.SpringBootJpaApplication - 打印WARN信息</span><br><span class="line"><span class="number">13</span>:<span class="number">35</span>:<span class="number">48.910</span> [main]  ERROR o.x.s.jpa.SpringBootJpaApplication - 打印ERROR信息</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li>带有loger的配置,不指定级别,不指定appender.</li>
+</ol>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;Console&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;HH:mm:ss.SSS&#125; [%thread]  %-5level %logger&#123;36&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;org.xiaokui.springboot.jpa&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;Console&quot;</span> /&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>&lt;logger name=&quot;org.xiaokui.springboot.jpa&quot; &gt;&lt;/logger&gt;</code>将控制<code>org.xiaokui.springboot.jpa</code>包下的所有类的日志的打印，但是并没用设置打印级别，所以继承他的上级</p>
+<p><root>的日志级别”INFO；<br>没有设置addtivity，默认为true，将此loger的打印信息向上级传递；<br>没有设置appender，此loger本身不打印任何信息.</root></p>
+</li>
+<li><p><root level="INFO">将root的打印级别设置为”INFO”，指定了名字为”Console”的appender。</root></p>
+</li>
+<li><p>运行SpringBootJpaApplication类,因为SpringBootJpaApplication类 在包org.xiaokui.springboot.jpa中，所以首先执行<code>&lt;logger name=&quot;org.xiaokui.springboot.jpa&quot; /&gt;</code>，将级别为”INFO”及大于”INFO”的日志信息传递给root，本身并不打印；</p>
+</li>
+<li><p>root接到下级传递的信息，交给已经配置好的名为”Console”的appender处理，”Console”appender将信息打印到控制台;</p>
+<p>打印结果如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">20</span>:<span class="number">54</span>:<span class="number">44.304</span> [main]  INFO  o.x.s.jpa.SpringBootJpaApplication - 打印INFO信息</span><br><span class="line"><span class="number">20</span>:<span class="number">54</span>:<span class="number">44.304</span> [main]  WARN  o.x.s.jpa.SpringBootJpaApplication - 打印WARN信息</span><br><span class="line"><span class="number">20</span>:<span class="number">54</span>:<span class="number">44.304</span> [main]  ERROR o.x.s.jpa.SpringBootJpaApplication - 打印ERROR信息</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li>带有多个loger的配置,指定级别,指定appender</li>
+</ol>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;Console&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;HH:mm:ss.SSS&#125; [%thread]  %-5level %logger&#123;36&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;org.xiaokui.springboot.jpa&quot;</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;org.xiaokui.springboot.jpa.SpringBootJpaApplication&quot;</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span> <span class="attr">additivity</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;Console&quot;</span>/&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;Console&quot;</span> /&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>&lt;logger name=&quot;org.xiaokui.springboot.jpa&quot; /&gt;</code>将控制logback包下的所有类的日志的打印，但是并没用设置打印级别，所以继承他的上级</p>
+<p><root>的日志级别”INFO”；<br>没有设置addtivity，默认为true，将此loger的打印信息向上级传递；<br>没有设置appender，此loger本身不打印任何信息。</root></p>
+</li>
+<li><p><code>&lt;logger name=&quot;org.xiaokui.springboot.jpa.SpringBootJpaApplication&quot; level=&quot;WARN&quot; additivity=&quot;false&quot;&gt;</code>控制<code>SpringBootJpaApplication</code>类的日志打印，打印级别为”WARN”; additivity属性为false，表示此loger的打印信息不再向上级传递， 指定了名字为”Console”的appender。</p>
+</li>
+<li><p><code>&lt;root level=&quot;INFO&quot;&gt;</code>将root的打印级别设置为”INFO”，指定了名字为”Console”的appender。</p>
+</li>
+<li><p>运行SpringBootJpaApplication类,先执行</p>
+<p><logger name="org.xiaokui.springboot.jpa.SpringBootJpaApplication" level="WARN" additivity="false">,将级别为”WARN”及大于”WARN”的日志信息交给此loger指定的名为”Console”的appender处理，在控制台中打出日志，不再向此loger的上级 <code>&lt;logger name="org.xiaokui.springboot.jpa"/&gt;</code> 传递打印信息；</logger></p>
+</li>
+<li><p><code>&lt;logger name=&quot;org.xiaokui.springboot.jpa&quot;/&gt;</code>未接到任何打印信息，当然也不会给它的上级root传递任何打印信息;</p>
+</li>
+</ul>
+<p>  打印结果如下:</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">21</span>:<span class="number">01</span>:<span class="number">56.706</span> [main]  WARN  o.x.s.jpa.SpringBootJpaApplication - 打印WARN信息</span><br><span class="line"><span class="number">21</span>:<span class="number">01</span>:<span class="number">56.706</span> [main]  ERROR o.x.s.jpa.SpringBootJpaApplication - 打印ERROR信息</span><br></pre></td></tr></table></figure>
+
+<p>  如果将<code>&lt;logger name=&quot;org.xiaokui.springboot.jpa.SpringBootJpaApplication&quot; level=&quot;WARN&quot; additivity=&quot;false&quot;&gt;</code>修改为 <code>&lt;logger name=&quot;org.xiaokui.springboot.jpa.SpringBootJpaApplication&quot; level=&quot;WARN&quot; additivity=&quot;true&quot;&gt;</code>则打印信息向上级传递，logger本身打印一次，root接到后又打印一次.</p>
+<p>  打印结果如下:</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">21</span>:<span class="number">07</span>:<span class="number">30.162</span> [main]  WARN  o.x.s.jpa.SpringBootJpaApplication - 打印WARN信息</span><br><span class="line"><span class="number">21</span>:<span class="number">07</span>:<span class="number">30.162</span> [main]  WARN  o.x.s.jpa.SpringBootJpaApplication - 打印WARN信息</span><br><span class="line"><span class="number">21</span>:<span class="number">07</span>:<span class="number">30.163</span> [main]  ERROR o.x.s.jpa.SpringBootJpaApplication - 打印ERROR信息</span><br><span class="line"><span class="number">21</span>:<span class="number">07</span>:<span class="number">30.163</span> [main]  ERROR o.x.s.jpa.SpringBootJpaApplication - 打印ERROR信息</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#spring boot" >
+    <span class="tag-code">spring boot</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/05/09/spring-boot/spring-boot-junit/">
+        <span class="nav-arrow">← </span>
+        
+          spring-boot 学习笔记 - Junit 单元测试
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/05/11/spring-boot/spring-boot-mybatis/">
+        
+          spring-boot 学习笔记 - 集成MyBatis,分页插件PageHelper, 通用Mapper
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%BB%98%E8%AE%A4%E7%9A%84%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6-logback"><span class="toc-nav-text">默认的日志框架 logback</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%93%E5%87%BA"><span class="toc-nav-text">控制台输出</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA"><span class="toc-nav-text">文件输出</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">自定义日志配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#logback-spring-xml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-nav-text">logback-spring.xml 配置文件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E6%A0%B9%E8%8A%82%E7%82%B9-lt-configuration-gt"><span class="toc-nav-text">1. 根节点&lt;configuration&gt;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E5%AD%90%E8%8A%82%E7%82%B9-lt-contextName-gt"><span class="toc-nav-text">2. 子节点&lt;contextName&gt;:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%AD%90%E8%8A%82%E7%82%B9-lt-property-gt"><span class="toc-nav-text">3. 子节点&lt;property&gt;:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E5%AD%90%E8%8A%82%E7%82%B9-lt-timestamp-gt"><span class="toc-nav-text">4. 子节点&lt;timestamp&gt;:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-%E5%AD%90%E8%8A%82%E7%82%B9-lt-appender-gt"><span class="toc-nav-text">5. 子节点&lt;appender&gt;:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-%E5%AD%90%E8%8A%82%E7%82%B9-lt-logger-gt"><span class="toc-nav-text">6. 子节点&lt;logger&gt;:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-%E5%AD%90%E8%8A%82%E7%82%B9-lt-root-gt"><span class="toc-nav-text">7. 子节点&lt;root&gt;:</span></a></li></ol></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2017/05/10/spring-boot/spring-boot-logger/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+  <script>
+    var gitmentConfig = "xiaokuicui";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "spring-boot 学习笔记 - 默认日志 logback 配置",
+        owner: "xiaokuicui",
+        repo: "xiaokuicui.github.io",
+        oauth: {
+          client_id: "8cfb250781885984f988",
+          client_secret: "6e97ff67546177ed763537725dce080eadae3062"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
