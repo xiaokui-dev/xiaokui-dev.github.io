@@ -169,7 +169,283 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"></section>
+    <section class="markdown-content"><h3 id="什么是面向对象？"><a href="#什么是面向对象？" class="headerlink" title="什么是面向对象？"></a>什么是面向对象？</h3><p>面向对象是一种思想，世间万物都可以看做一个对象，Java 是一个支持并发、基于类和面向对象的计算机编程语言。面向对象软件开发具有以下优点：</p>
+<ul>
+<li>代码开发模块化，更易维护和修改。</li>
+<li>代码复用性强。</li>
+<li>增强代码的可靠性和灵活性。</li>
+<li>增加代码的可读性。</li>
+</ul>
+<h3 id="面向对象的特征"><a href="#面向对象的特征" class="headerlink" title="面向对象的特征"></a>面向对象的特征</h3><ul>
+<li><p><code>封装</code>: 给对象提供了隐藏内部特性和行为的能力。对象提供一些能被其他对象访问的方法来改变它内部的数据。<br>在 Java 当中，有 4 种修饰符：<code>default、public、private、protected</code>。每一种修饰符给其他的位于同一个包或者不同包下面对象赋予了不同的访问权限。<br>下面列出了使用封装的一些好处：</p>
+<ul>
+<li>通过隐藏对象的属性来保护对象内部的状态。</li>
+<li>提高了代码的可用性和可维护性，因为对象的行为可以被单独的改变或者是扩展</li>
+<li>禁止对象之间的不良交互提高模块化。</li>
+</ul>
+</li>
+<li><p><code>继承</code>: 给对象提供了从基类获取字段和方法的能力。继承提供了代码的重用行，也可以在不修改类的情况下给现存的类添加新特性。</p>
+</li>
+<li><p><code>多态</code>: 是编程语言给不同的底层数据类型做相同的接口展示的一种能力。一个多态类型上的操作，可以应用到其他类型的值上面。</p>
+</li>
+<li><p><code>抽象</code>: 是把想法从具体的实例中分离出来的步骤，因此，要根据他们的功能而不是实现细节来创建类</p>
+</li>
+</ul>
+<blockquote>
+<p>Java 支持创建只暴漏接口而不包含方法实现的抽象的类。这种抽象技术的主要目的是把类的行为和实现细节分离开</p>
+</blockquote>
+<h3 id="面向对象和面向过程的区别"><a href="#面向对象和面向过程的区别" class="headerlink" title="面向对象和面向过程的区别"></a>面向对象和面向过程的区别</h3><ul>
+<li><p><code>面向过程</code>:</p>
+<ul>
+<li>优点：性能比面向对象高，因为类调用时需要实例化，开销比较大，比较消耗资源。比如，单片机、嵌入式开发、Linux/Unix 等一般采用面向过程开发，性能是最重要的因素</li>
+<li>缺点：没有面向对象易维护、易复用、易扩展</li>
+</ul>
+</li>
+<li><p><code>面向对象</code>:</p>
+<ul>
+<li>优点：易维护、易复用、易扩展，由于面向对象有封装、继承、多态性的特性，可以设计出低耦合的系统，使系统更加灵活、更加易于维护</li>
+<li>缺点：性能比面向过程低</li>
+</ul>
+</li>
+</ul>
+<h3 id="重载和重写的区别"><a href="#重载和重写的区别" class="headerlink" title="重载和重写的区别"></a>重载和重写的区别</h3><ul>
+<li><p><code>重写 override</code>:</p>
+<ul>
+<li>方法名、参数、返回值相同。</li>
+<li>子类方法不能缩小父类方法的访问权限。</li>
+<li>子类方法不能抛出比父类方法更多的异常(但子类方法可以不抛出异常)</li>
+<li>存在于父类和子类之间</li>
+<li>方法被定义为 <code>final</code> 不能被重写</li>
+</ul>
+</li>
+<li><p><code>重载 overload</code>:</p>
+<ul>
+<li>参数类型、个数、顺序至少有一个不相同。</li>
+<li>不能重载只有返回值不同的方法名。</li>
+<li>存在于父类和子类、同类中。</li>
+</ul>
+</li>
+</ul>
+<h3 id="构造方法、构造方法重载、拷贝构造方法"><a href="#构造方法、构造方法重载、拷贝构造方法" class="headerlink" title="构造方法、构造方法重载、拷贝构造方法"></a>构造方法、构造方法重载、拷贝构造方法</h3><ul>
+<li><p><code>构造方法</code>: 当新对象被创建的时候，构造方法会被调用。每一个类都有构造方法。在程序员没有给类提供构造方法的情况下，Java 编译器会为这个类创建一个默认的构造方法。</p>
+</li>
+<li><p><code>构造方法重载</code>: Java 中构造方法重载和方法重载很相似。可以为一个类创建多个构造方法。每一个构造方法必须有它自己唯一的参数列表。</p>
+</li>
+<li><p><code>拷贝构造方法</code>: Java 不支持像 C++ 中那样的<a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-copy-constructor.html">拷贝构造方法</a>，这个不同点是因为如果你不自己写构造方法的情况下，Java 不会创建默认的拷贝构造方法。</p>
+</li>
+</ul>
+<h3 id="JDK、JRE、JVM-的关系"><a href="#JDK、JRE、JVM-的关系" class="headerlink" title="JDK、JRE、JVM 的关系"></a>JDK、JRE、JVM 的关系</h3><ul>
+<li><p><code>JDK</code>( JDK 包含 JRE 和 JVM): 即为 Java 开发工具包，包含编写 Java 程序所必须的编译、运行等开发工具以及 JRE。开发工具如</p>
+<ul>
+<li>用于编译 Java 程序的 javac 命令。</li>
+<li>用于启动 JVM 运行 Java 程序的 Java 命令。</li>
+<li>用于生成文档的 Javadoc 命令。</li>
+<li>用于打包的 jar 命令等等。</li>
+</ul>
+</li>
+<li><p><code>JRE(JRE 包含 JVM)</code>:即为 Java 运行环境，提供了运行 Java 应用程序所必须的软件环境，包含有 Java 虚拟机（JVM）和丰富的系统类库。系统类库即为 Java 提前封装好的功能类，只需拿来直接使用即可，可以大大的提高开发效率。</p>
+</li>
+<li><p><code>JVM</code>: 即为 Java 虚拟机，提供了字节码文件(.class)的运行环境支持.</p>
+</li>
+<li><p><code>Java 被称作是“平台无关的编程语言&quot;</code>:</p>
+<ul>
+<li>Java 源文件( .java )被编译成能被 Java 虚拟机执行的字节码文件( .class )。</li>
+<li>Java 被设计成允许应用程序可以运行在任意的平台，而不需要程序员为每一个平台单独重写或者是重新编译。Java 虚拟机让这个变为可能，因为它知道底层硬件平台的指令长度和其他特性</li>
+</ul>
+</li>
+</ul>
+<h3 id="基本数据类型和引用类型"><a href="#基本数据类型和引用类型" class="headerlink" title="基本数据类型和引用类型"></a>基本数据类型和引用类型</h3><ul>
+<li><p><code>基本数据类型如下</code>：</p>
+<ul>
+<li>整数值型：<code>byte、short、int、long</code></li>
+<li>字符型：<code>char</code></li>
+<li>浮点类型：<code>float、double</code></li>
+<li>布尔型：<code>boolean</code></li>
+<li>整数型：默认 <code>int</code> 型，小数默认是 <code>double</code> 型。Float 和 Long 类型的必须加后缀。比如：<code>float f = 100f</code> 。</li>
+</ul>
+</li>
+<li><p><code>引用类型声明的变量是指该变量在内存中实际存储的是一个引用地址，实体在堆中</code>。</p>
+<ul>
+<li>引用类型包括类、接口、数组等。</li>
+<li>特别注意，String 是引用类型不是基本类型。</li>
+</ul>
+</li>
+<li><p><code>什么是值传递和引用传递</code></p>
+<ul>
+<li>值传递，是对基本型变量而言的，传递的是该变量的一个副本，改变副本不影响原变量。</li>
+<li>引用传递，一般是对于对象型变量而言的，传递的是该对象地址的一个副本，并不是原对象本身。</li>
+</ul>
+<blockquote>
+<p>一般认为，Java 内的传递都是值传递，Java 中实例对象的传递是引用传递。</p>
+</blockquote>
+</li>
+<li><p><code>是否可以在 static 环境中访问非 static 变量</code></p>
+<p> <code>static</code> 变量在 Java 中是属于类的，它在所有的实例中的值是一样的。当类被 Java 虚拟机载入的时候，会对 <code>static</code> 变量进行初始化。</p>
+<blockquote>
+<p>如果你的代码尝试不用实例来访问非 static 的变量，编译器会报错，因为这些变量还没有被创建出来，还没有跟任何实例关联上。</p>
+</blockquote>
+</li>
+<li><p><code>char 型变量中能不能存贮一个中文汉字？为什么？</code></p>
+<ul>
+<li>在 C 语言中，char 类型占 1 个字节，而汉字占 2 个字节，所以不能存储。</li>
+<li>在 Java 语言中，char 类型占 2 个字节，而且 Java 默认采用 Unicode 编码，一个 Unicode 码是 16 位，所以一个 Unicode 码占两个字节，Java 中无论汉字还是英文字母，都是用 Unicode 编码来表示的。所以，在 Java 中，char 类型变量可以存储一个中文汉字。</li>
+</ul>
+</li>
+</ul>
+<h3 id="String、StringBuffer、StringBuilder-的区别？"><a href="#String、StringBuffer、StringBuilder-的区别？" class="headerlink" title="String、StringBuffer、StringBuilder 的区别？"></a>String、StringBuffer、StringBuilder 的区别？</h3><ul>
+<li><p><code>String</code>: 是只读字符串，也就意味着 String 引用的字符串内容是不能被改变的。<br>每次对 String 类型进行改变的时候，都会生成一个新的 String 对象，然后将指针指向新的 String 对象。</p>
+</li>
+<li><p><code>StringBuffer/StringBuilder</code>: 表示的字符串对象可以直接进行修改。StringBuilder 是 Java 5 中引入的，它和 StringBuffer 的方法完全相同，区别在于它是在单线程环境下使用的，因为它的所有方面都没有被 <code>synchronized</code> 修饰，因此它的效率也比 StringBuffer 要高</p>
+<blockquote>
+<p>对于三者使用的总结:</p>
+<ul>
+<li>操作少量的数据 = String。</li>
+<li>单线程操作字符串缓冲区下操作大量数据 = StringBuilder。</li>
+<li>多线程操作字符串缓冲区下操作大量数据 = StringBuffer。</li>
+</ul>
+</blockquote>
+</li>
+<li><p><code>String s = new String(&quot;xyz&quot;)</code> 会创建几个对象：</p>
+<ul>
+<li>首先，在 String 池内找，找到 “xyz” 字符串，不创建 “xyz” 对应的 String 对象，否则创建一个对象</li>
+<li>然后，遇到 new 关键字，在内存上创建 String 对象，并将其返回给 s ，又一个对象。</li>
+</ul>
+</li>
+<li><p><code>String 为什么是不可变的</code>？</p>
+<p>String 类中使用 <code>final</code> 关键字字符数组保存字符串,代码如下：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// String.java</span></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">char</span>[] value;</span><br></pre></td></tr></table></figure>
+<p>所以 String 对象是不可变的。</p>
+<p>而 StringBuilder 与 StringBuffer 都继承自 AbstractStringBuilder 类，在 AbstractStringBuilder 中也是使用字符数组保存字符串 char[] value ，但是没有用 final 关键字修饰。代码如下：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AbstractStringBuilder.java</span></span><br><span class="line"><span class="keyword">char</span>[] value;</span><br></pre></td></tr></table></figure>
+<p> 所以这两种对象都是可变的。</p>
+</li>
+<li><p><code>StringTokenizer 是什么？</code> 是一个用来分割字符串的工具类。</p>
+</li>
+</ul>
+<h3 id="自动拆装箱"><a href="#自动拆装箱" class="headerlink" title="自动拆装箱"></a>自动拆装箱</h3><p>自动装箱和拆箱，就是基本类型和引用类型之间的转换</p>
+<ul>
+<li>int 和 Integer 有什么区别<ul>
+<li>int 是基本数据类型。</li>
+<li>Integer 是其包装类，注意是一个类</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>要注意下 Integer 的缓存策略，可以看看<a target="_blank" rel="noopener" href="http://www.importnew.com/18884.html">理解Java Integer 的缓存策略</a> 文章</p>
+</blockquote>
+<h3 id="equals-与-的区别"><a href="#equals-与-的区别" class="headerlink" title="equals 与 == 的区别"></a>equals 与 == 的区别</h3><ul>
+<li><p>值类型（<code>int,char,long,boolean</code>等）的话,都是用 <code>==</code> 判断相等性</p>
+</li>
+<li><p>对象引用的话</p>
+<ul>
+<li><code>==</code> 判断引用所指的对象是否是同一个</li>
+<li><code>equals</code> 方法，是 Object 的成员函数，有些类会覆盖(override) 这个方法，用于判断对象的等价性<blockquote>
+<p>例如 String 类，两个引用所指向的 String 都是 “abc” ，但可能出现他们实际对应的对象并不是同一个（和 JVM 实现方式有关），因此用 == 判断他们可能不相等，但用 equals 方法判断一定是相等的。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>如何在父类中为子类自动完成所有的 hashCode 和 equals 实现？这么做有何优劣</p>
+<p>父类的 equals ，一般情况下是无法满足子类的 equals 的需求</p>
+<ul>
+<li>比如所有的对象都继承 Object ，默认使用的是 Object 的 equals 方法，在比较两个对象的时候，是看他们是否指向同一个地址。但是我们的需求是对象的某个属性相同，就相等了，而默认的 equals 方法满足不了当前的需求，所以我们要重写 equals 方法。</li>
+<li>如果重写了 equals 方法，就必须重写 hashCode 方法，否则就会降低 Map 等集合的索引速度</li>
+</ul>
+</li>
+<li><p>有没有可能 2 个不相等的对象有相同的 hashCode</p>
+<p>可能会发生，这个被称为哈希碰撞。当然，相等的对象，即我们重写了 equals 方法，一定也要重写 hashCode 方法，否则将出现我们在 HashMap 中，相等的对象作为 key ，将找不到对应的 value.<br>所以说，equals 和 hashCode 的关系会是</p>
+<ul>
+<li>equals 不相等，hashCode 可能相等。</li>
+<li>equals 相等，请重写 hashCode 方法，保证 hashCode 相等。</li>
+</ul>
+</li>
+</ul>
+<h3 id="final、finally、finalize-的区别"><a href="#final、finally、finalize-的区别" class="headerlink" title="final、finally、finalize 的区别"></a>final、finally、finalize 的区别</h3><ul>
+<li><p><code>final: 是修饰符关键字</code></p>
+<ul>
+<li>如果一个类被声明为 <code>final</code> ，意味着它不能再派生出新的子类，不能作为父类被继承。因此一个类不能既被声明为 <code>abstract</code> 的，又被声明为 final 的</li>
+<li>将变量或方法声明为 <code>final</code> ，可以保证它们在使用中不被改变。被声明为 <code>final</code> 的变量必须在声明时给定初值，而在以后的引用中只能读取，不可修改。被声明为 <code>final</code> 的方法也同样只能使用，不能重写</li>
+</ul>
+</li>
+<li><p><code>finally</code>: 在异常处理时提供 <code>finally</code> 块来执行任何清除操作。如果抛出一个异常，那么相匹配的 <code>catch</code> 子句就会执行，然后控制就会进入 <code>finally</code> 块（如果有的话）</p>
+<p>在以下 4 种特殊情况下，<code>finally</code>块不会被执行</p>
+<ul>
+<li>在 finally 语句块中发生了异常。</li>
+<li>在前面的代码中用了 System.exit() 退出程序。</li>
+<li>程序所在的线程死亡。</li>
+<li>关闭 CPU 。</li>
+</ul>
+</li>
+<li><p><code>finalize:方法名</code>。</p>
+<p>垃圾收集器将对象从内存中清除出去之前做必要的清理工作。这个方法是由垃圾收集器在确定这个对象没有被引用时对这个对象调用的</p>
+<ul>
+<li>它是在 Object 类中定义的，因此所有的类都继承了它</li>
+<li>子类覆盖 <code>finalize()</code> 方法，以整理系统资源或者执行其他清理工作</li>
+<li><code>finalize()</code> 方法，是在垃圾收集器删除对象之前对这个对象调用的</li>
+</ul>
+</li>
+</ul>
+<h3 id="抽象类和接口有什么区别"><a href="#抽象类和接口有什么区别" class="headerlink" title="抽象类和接口有什么区别"></a>抽象类和接口有什么区别</h3><ul>
+<li>Java 提供和支持创建抽象类和接口。它们的实现有共同点，不同点在于：接口中所有的方法隐含的都是抽象的，而抽象类则可以同时包含抽象和非抽象的方法</li>
+<li>类可以实现很多个接口，但是只能继承一个抽象类。类可以不实现抽象类和接口声明的所有方法，当然，在这种情况下，类也必须得声明成是抽象的。</li>
+<li>抽象类可以在不提供接口方法实现的情况下实现接口。</li>
+<li>Java 接口中声明的变量默认都是 <code>final</code> 的。抽象类可以包含非 <code>final</code> 的变量。</li>
+<li>Java 接口中的成员函数默认是 <code>public</code> 的。抽象类的成员函数可以是 <code>private</code>，<code>protected</code> 或者是 <code>public</code> 。</li>
+<li>接口是绝对抽象的，不可以被实例化。抽象类也不可以被实例化，但是，如果它包含 <code>main(String[] args)</code> 方法的话是可以被调用的</li>
+</ul>
+<h3 id="类的实例化顺序"><a href="#类的实例化顺序" class="headerlink" title="类的实例化顺序"></a>类的实例化顺序</h3><ul>
+<li>父类静态变量</li>
+<li>父类静态代码块</li>
+<li>子类静态变量</li>
+<li>子类静态代码块</li>
+<li>父类非静态变量（父类实例成员变量）</li>
+<li>父类构造函数</li>
+<li>子类非静态变量（子类实例成员变量）</li>
+<li>子类构造函数</li>
+</ul>
+<h3 id="什么是内部类？"><a href="#什么是内部类？" class="headerlink" title="什么是内部类？"></a>什么是内部类？</h3><p>简单的说，就是在一个类、接口或者方法的内部创建另一个类</p>
+<ol>
+<li><p>内部类的作用: 内部类提供了更好的封装，除了该外围类，其他类都不能访问</p>
+</li>
+<li><p>Anonymous Inner Class(匿名内部类)是否可以继承其它类？是否可以实现接口:</p>
+<p>可以继承其他类或实现其他接口，在 Java 集合的流式操作中，我们常常这么干。</p>
+</li>
+<li><p>内部类可以引用它的包含类（外部类）的成员吗？有没有什么限制？</p>
+<p>一个内部类对象可以访问创建它的外部类对象的成员，包括私有成员。</p>
+</li>
+</ol>
+<h3 id="Java-IO"><a href="#Java-IO" class="headerlink" title="Java IO"></a>Java IO</h3><p>Java IO 相关的类，在 java.io 包下，具体操作分成面向字节(Byte)和面向字符(Character)两种方式</p>
+<h3 id="Java-序列化"><a href="#Java-序列化" class="headerlink" title="Java 序列化"></a>Java 序列化</h3><p>序列化就是一种用来处理对象流的机制，所谓对象流也就是将对象的内容进行流化。</p>
+<ul>
+<li>可以对流化后的对象进行读写操作，也可将流化后的对象传输于网络之间</li>
+<li>序列化是为了解决在对对象流进行读写操作时所引发的问题。</li>
+</ul>
+<p>反序列化的过程，则是和序列化相反的过程。</p>
+<blockquote>
+<p>另外，我们不能将序列化局限在 Java 对象转换成二进制数组，例如说，我们将一个 Java 对象，转换成 JSON 字符串，或者 XML 字符串，这也可以理解为是序列化。</p>
+</blockquote>
+<h5 id="如何实现-Java-序列化"><a href="#如何实现-Java-序列化" class="headerlink" title="如何实现 Java 序列化"></a>如何实现 Java 序列化</h5><blockquote>
+<p>如下的方式，就是 Java 内置的序列化方案，实际场景下，我们可以自定义序列化的方案，例如说 Google Protobuf 。</p>
+</blockquote>
+<p>将需要被序列化的类，实现 Serializable 接口，该接口没有需要实现的方法，<code>implements Serializable</code> 只是为了标注该对象是可被序列化的。</p>
+<ul>
+<li>序列化<ul>
+<li>然后，使用一个输出流(如：FileOutputStream)来构造一个 ObjectOutputStream(对象流)对象</li>
+<li>接着，使用 ObjectOutputStream 对象的 #writeObject(Object obj) 方法，就可以将参数为 obj 的对象写出(即保存其状态)。</li>
+</ul>
+</li>
+<li>反序列化<ul>
+<li>要恢复的话则用输入流。</li>
+</ul>
+</li>
+</ul>
+<h5 id="Java-序列话中，如果有些字段不想进行序列化怎么办"><a href="#Java-序列话中，如果有些字段不想进行序列化怎么办" class="headerlink" title="Java 序列话中，如果有些字段不想进行序列化怎么办"></a>Java 序列话中，如果有些字段不想进行序列化怎么办</h5><p>对于不想进行序列化的变量，使用 <code>transient</code> 关键字修饰</p>
+<ul>
+<li>当对象被序列化时，阻止实例中那些用此关键字修饰的的变量序列化。</li>
+<li>当对象被反序列化时，被 <code>transient</code> 修饰的变量值不会被持久化和恢复。</li>
+<li><code>transient</code> 只能修饰变量，不能修饰类和方法。</li>
+</ul>
+</section>
     <!-- Tags START -->
     
       <div class="tags">
@@ -195,7 +471,7 @@
       </a>
     
     
-      <a class="nav-right" href="/2021/09/27/interview-dubbo/">
+      <a class="nav-right" href="/2021/09/27/rpc/dubbo/">
         
           Dubbo 面试笔记
         
@@ -224,7 +500,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%EF%BC%9F"><span class="toc-nav-text">什么是面向对象？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%89%B9%E5%BE%81"><span class="toc-nav-text">面向对象的特征</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%92%8C%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">面向对象和面向过程的区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">重载和重写的区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E3%80%81%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E9%87%8D%E8%BD%BD%E3%80%81%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-nav-text">构造方法、构造方法重载、拷贝构造方法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JDK%E3%80%81JRE%E3%80%81JVM-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">JDK、JRE、JVM 的关系</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">基本数据类型和引用类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#String%E3%80%81StringBuffer%E3%80%81StringBuilder-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-nav-text">String、StringBuffer、StringBuilder 的区别？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%87%AA%E5%8A%A8%E6%8B%86%E8%A3%85%E7%AE%B1"><span class="toc-nav-text">自动拆装箱</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#equals-%E4%B8%8E-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">equals 与 &#x3D;&#x3D; 的区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#final%E3%80%81finally%E3%80%81finalize-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">final、finally、finalize 的区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8A%BD%E8%B1%A1%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">抽象类和接口有什么区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E9%A1%BA%E5%BA%8F"><span class="toc-nav-text">类的实例化顺序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E9%83%A8%E7%B1%BB%EF%BC%9F"><span class="toc-nav-text">什么是内部类？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Java-IO"><span class="toc-nav-text">Java IO</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Java-%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-nav-text">Java 序列化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0-Java-%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-nav-text">如何实现 Java 序列化</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Java-%E5%BA%8F%E5%88%97%E8%AF%9D%E4%B8%AD%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E4%BA%9B%E5%AD%97%E6%AE%B5%E4%B8%8D%E6%83%B3%E8%BF%9B%E8%A1%8C%E5%BA%8F%E5%88%97%E5%8C%96%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-nav-text">Java 序列话中，如果有些字段不想进行序列化怎么办</span></a></li></ol></li></ol></li></ol>
     
   </div>
 </aside>

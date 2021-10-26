@@ -178,7 +178,7 @@
 <p>实际上，还有第五种方式，外部化配置。参见 <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012661402">dubbo 新编程模型之外部化配置</a><br>目前，主要使用的是 XML 配置和注解配置。</p>
 <h2 id="Dubbo-和-spring-boot-进行集成"><a href="#Dubbo-和-spring-boot-进行集成" class="headerlink" title="Dubbo 和 spring boot 进行集成"></a>Dubbo 和 spring boot 进行集成</h2><p>官方提供了集成库 <a target="_blank" rel="noopener" href="https://github.com/apache/incubator-dubbo-spring-boot-project">dubbo-spring-boot</a></p>
 <h2 id="Dubbo-框架的分层设计"><a href="#Dubbo-框架的分层设计" class="headerlink" title="Dubbo 框架的分层设计"></a>Dubbo 框架的分层设计</h2><p>一共分成 10 层，理解后是非常清晰的。如下图所示：</p>
-<img src="/2021/09/27/interview-dubbo/dubbo-01.png" class="">
+<img src="/2021/09/27/rpc/dubbo/dubbo-01.png" class="">
 
 <p><strong>图例说明</strong></p>
 <ul>
@@ -256,7 +256,7 @@
 </blockquote>
 </li>
 </ul>
-<h2 id="Dubbo-调用流程"><a href="#Dubbo-调用流程" class="headerlink" title="Dubbo 调用流程"></a>Dubbo 调用流程</h2><img src="/2021/09/27/interview-dubbo/dubbo-02.png" class="">
+<h2 id="Dubbo-调用流程"><a href="#Dubbo-调用流程" class="headerlink" title="Dubbo 调用流程"></a>Dubbo 调用流程</h2><img src="/2021/09/27/rpc/dubbo/dubbo-02.png" class="">
 
 <ul>
 <li><p>Provider</p>
@@ -289,7 +289,7 @@
 </li>
 </ul>
 <p>下面这张图可以更立体的展示 Dubbo 的调用流程</p>
-<img src="/2021/09/27/interview-dubbo/dubbo-03.png" class="">
+<img src="/2021/09/27/rpc/dubbo/dubbo-03.png" class="">
 
 <ul>
 <li>注意，图中的【代理】指的是 proxy 代理服务层，和 Consumer 或 Provider 在同一进城中。</li>
@@ -406,7 +406,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2021/09/27/interview-dubbo/';
+    var url = 'http://example.com/2021/09/27/rpc/dubbo/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
